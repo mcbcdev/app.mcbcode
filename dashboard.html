@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="https://mcbcode.com/theme/favicon.png">
+  <link rel="stylesheet" href="https://mcbcode.com/theme/site.css">
+  <title>mcbCode | Dashboard</title>
+  <style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	height: 100%;
+	background: #0c0c0c;
+	color: #bebebe;
+	font-family: 'mcfont', sans-serif;
+	overflow-x: hidden;
+}
+
+a {
+	text-decoration: none;
+	color: #ffffff;
+	transition: color 0.2s;
+}
+
+a:hover {
+	color: #05ee93;
+}
+
+g {
+	color: #05ee93;
+}
+
+c {
+	color: #e7007b;
+}
+
+.topnav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 56px;
+	background: rgba(20, 20, 20, 0.85);
+	backdrop-filter: blur(8px);
+	border-bottom: 1px solid #1f1f1f;
+	display: flex;
+	align-items: center;
+	padding: 0 16px;
+	z-index: 300;
+	gap: 16px;
+}
+
+.topnav-title {
+	font-size: 20px;
+	color: #ffffff;
+	font-family: 'mcfontb', sans-serif;
+}
+
+.topnav-right {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	font-size: 14px;
+}
+
+#user-email {
+	color: #88888800;
+	font-size: 13px;
+    user-select: none;
+}
+
+.logout-btn {
+	background: #1e1e1e;
+	border: 1px solid #2e2e2e;
+	color: #bebebe;
+	font-family: 'mcfont', sans-serif;
+	font-size: 13px;
+	padding: 6px 12px;
+	cursor: pointer;
+	transition: color 0.2s, border-color 0.2s;
+}
+
+.logout-btn:hover {
+	color: #ff5555;
+	border-color: #ff5555;
+}
+
+.sidebar-toggle {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 6px;
+	color: #888;
+	font-size: 20px;
+	line-height: 1;
+	transition: color 0.2s;
+	flex-shrink: 0;
+}
+
+.sidebar-toggle:hover {
+	color: #05ee93;
+}
+
+.layout {
+	margin-top: 56px;
+	min-height: calc(100vh - 56px);
+}
+
+/* ---- SIDEBAR: always an overlay, never pushes content ---- */
+.sidebar {
+	width: 75%;
+	background: #101010;
+	border-right: 1px solid #1f1f1f;
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	top: 56px;
+	bottom: 0;
+	left: 0;
+	transform: translateX(-100%);
+	transition: transform 0.22s ease;
+	z-index: 250;
+	box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+}
+
+.sidebar.expanded {
+	transform: translateX(0);
+}
+
+.sidebar-scrim {
+	display: none;
+	position: fixed;
+	top: 56px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.55);
+	backdrop-filter: blur(3px);
+	z-index: 200;
+}
+
+.sidebar-scrim.visible {
+	display: block;
+}
+
+.sidebar-nav {
+	display: flex;
+	flex-direction: column;
+	padding: 12px 0;
+	gap: 2px;
+	flex: 1;
+	overflow-y: auto;
+}
+
+.sidebar-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 14px;
+	cursor: pointer;
+	color: #888;
+	font-size: 14px;
+	white-space: nowrap;
+	transition: background 0.2s, color 0.2s;
+	border-left: 3px solid transparent;
+}
+
+.sidebar-item:hover {
+	background: #1a1a1a;
+	color: #ffffff;
+}
+
+.sidebar-item.active {
+	background: #1a1a1a;
+	color: #05ee93;
+	border-left-color: #05ee93;
+}
+
+.sidebar-item img {
+	width: 24px;
+	height: 24px;
+	flex-shrink: 0;
+	image-rendering: pixelated;
+	opacity: 0.7;
+	transition: opacity 0.2s;
+}
+
+.sidebar-item:hover img,
+.sidebar-item.active img {
+	opacity: 1;
+}
+
+.sidebar-label {
+	font-size: 12px;
+	color: #444;
+	line-height: 0.4em;
+	font-family: mcfontb;
+	padding: 16px 14px 4px;
+	white-space: nowrap;
+}
+
+.sidebar-bottom {
+	border-top: 1px solid #1f1f1f;
+	padding: 8px 0;
+}
+
+.main {
+    padding: 40px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+    transition: filter 0.22s ease;
+}
+
+.main.blurred {
+	filter: blur(4px);
+	pointer-events: none;
+	user-select: none;
+}
+
+.dash-section {
+	margin-bottom: 64px;
+	scroll-margin-top: 80px;
+}
+
+.dash-section h2 {
+	font-size: 22px;
+	color: #ffffff;
+	margin-bottom: 6px;
+	border-bottom: 1px solid #1f1f1f;
+	padding-bottom: 10px;
+}
+
+.dash-section p {
+	font-size: 14px;
+	color: #666;
+	margin-top: 8px;
+}
+
+.card-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 16px;
+	margin-top: 20px;
+}
+
+.card {
+	background: #141414;
+	border: 1px solid #1f1f1f;
+	padding: 20px;
+	transition: border-color 0.2s;
+	cursor: pointer;
+}
+
+.card:hover {
+	border-color: #05ee93;
+}
+
+.card h3 {
+	color: #ffffff;
+	font-size: 15px;
+	margin-bottom: 8px;
+}
+
+.card p {
+	font-size: 13px;
+	color: #555;
+	margin: 0;
+}
+
+.stat-row {
+	display: flex;
+	gap: 16px;
+	margin-top: 20px;
+	flex-wrap: wrap;
+}
+
+.stat {
+	background: #141414;
+	border: 1px solid #1f1f1f;
+	padding: 20px 28px;
+	flex: 1;
+	min-width: 120px;
+}
+
+.stat-value {
+	font-size: 28px;
+	color: #05ee93;
+	font-family: 'mcfontb', sans-serif;
+}
+
+#stat-points {
+	font-size: 28px;
+	color: #dc6bff;
+	font-family: 'mcfontb', sans-serif;
+}
+
+.stat-label {
+	font-size: 12px;
+	color: #555;
+	margin-top: 4px;
+}
+
+.empty {
+	margin-top: 20px;
+	padding: 40px;
+	background: #111;
+	border: 1px dashed #2a2a2a;
+	text-align: center;
+	color: #bebebe;
+	font-size: 14px;
+}
+
+.text-input {
+	background-color: #111;
+	border: 1px solid #2e2e2e;
+	outline: none;
+	padding: 6px 10px;
+	color: #ffffff;
+	font-family: 'mcfont', sans-serif;
+	font-size: 14px;
+	transition: border-color 0.2s;
+}
+
+.text-input:focus {
+	border-color: #05ee93;
+}
+
+.save-btn {
+	padding: 6px 8px;
+	background-color: #05ee93;
+	border: none;
+	outline: none;
+	font-size: 18px;
+	font-family: 'mcfont', sans-serif;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+}
+
+.save-btn:hover {
+	background-color: #78e3a6;
+}
+
+.save-btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.save-msg {
+	font-size: 13px;
+	margin-left: 10px;
+	display: none;
+}
+
+.save-msg.ok {
+	color: #05ee93;
+	display: inline;
+}
+
+.save-msg.err {
+	color: #ff5555;
+	display: inline;
+}
+
+.project-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 16px;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.project-list-header {
+	font-size: 12px;
+	color: #444;
+}
+
+.new-project-btn {
+	background: #05ee93;
+	border: none;
+	color: #0c0c0c;
+	font-family: 'mcfont', sans-serif;
+	font-size: 13px;
+	padding: 6px 14px;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.new-project-btn:hover {
+	background: #78e3a6;
+}
+
+.new-project-btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.project-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.project-row {
+	display: flex;
+	align-items: center;
+	background: #141414;
+	border: 1px solid #1f1f1f;
+	padding: 12px 16px;
+	gap: 16px;
+	transition: border-color 0.2s, background 0.2s;
+	cursor: pointer;
+}
+
+.project-row:hover {
+	border-color: #05ee93;
+	background: #171717;
+}
+
+.project-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.project-name {
+	color: #ffffff;
+	font-size: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.project-name span {
+	color: #444;
+	font-size: 12px;
+	margin-left: 6px;
+}
+
+.project-desc {
+	font-size: 12px;
+	color: #444;
+	margin-top: 2px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.project-date {
+	font-size: 12px;
+	color: #444;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.project-actions {
+	display: flex;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.proj-btn {
+	background: #1e1e1e;
+	border: 1px solid #2e2e2e;
+	color: #bebebe;
+	font-family: 'mcfont', sans-serif;
+	font-size: 12px;
+	padding: 4px 10px;
+	cursor: pointer;
+	transition: color 0.2s, border-color 0.2s;
+}
+
+.proj-btn:hover {
+	color: #05ee93;
+	border-color: #05ee93;
+}
+
+.proj-btn.danger:hover {
+	color: #ff5555;
+	border-color: #ff5555;
+}
+
+.proj-badge {
+	font-size: 10px;
+	padding: 2px 6px;
+	background-color: #2a2a2a;
+	color: #444;
+	margin-left: 6px;
+}
+
+.proj-badge.public {
+	background-color: #05ee931a;
+	color: #05ee93;
+}
+
+.modal-overlay {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.75);
+	z-index: 500;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal-overlay.visible {
+	display: flex;
+}
+
+.modal-box {
+	background: #1a1a1a;
+	border: 1px solid #2e2e2e;
+	padding: 28px 32px;
+	min-width: 360px;
+	max-width: 480px;
+	width: 100%;
+}
+
+.modal-box h3 {
+	color: #fff;
+	font-size: 16px;
+	margin-bottom: 20px;
+}
+
+.modal-field {
+	margin-bottom: 16px;
+}
+
+.modal-field label {
+	display: block;
+	font-size: 12px;
+	color: #555;
+	margin-bottom: 6px;
+}
+
+.modal-field input,
+.modal-field textarea {
+	width: 100%;
+	background: #111;
+	border: 1px solid #2e2e2e;
+	color: #fff;
+	font-family: 'mcfont', sans-serif;
+	font-size: 14px;
+	padding: 8px 10px;
+	outline: none;
+	transition: border-color 0.2s;
+	resize: none;
+}
+
+.modal-field input:focus,
+.modal-field textarea:focus {
+	border-color: #05ee93;
+}
+
+.modal-actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 20px;
+	justify-content: flex-end;
+}
+
+.modal-err {
+	font-size: 12px;
+	color: #ff5555;
+	margin-top: 8px;
+	display: none;
+}
+
+.modal-err.visible {
+	display: block;
+}
+
+.confirm-overlay {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.75);
+	z-index: 500;
+	align-items: center;
+	justify-content: center;
+}
+
+.confirm-overlay.visible {
+	display: flex;
+}
+
+.confirm-box {
+	background: #1a1a1a;
+	border: 1px solid #2e2e2e;
+	padding: 28px 32px;
+	min-width: 320px;
+	text-align: center;
+}
+
+.confirm-box p {
+	font-size: 15px;
+	color: #ffffff;
+	margin-bottom: 8px;
+}
+
+.confirm-box small {
+	font-size: 12px;
+	color: #555;
+}
+
+.confirm-actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 20px;
+	justify-content: center;
+}
+
+.confirm-yes {
+	background: #ff5555;
+	border: none;
+	color: #ffffff;
+	font-family: 'mcfont', sans-serif;
+	font-size: 14px;
+	padding: 6px 18px;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.confirm-yes:hover {
+	background: #cc0000;
+}
+
+.confirm-no {
+	background: #1e1e1e;
+	border: 1px solid #2e2e2e;
+	color: #bebebe;
+	font-family: 'mcfont', sans-serif;
+	font-size: 14px;
+	padding: 6px 18px;
+	cursor: pointer;
+}
+
+.confirm-no:hover {
+	color: #ffffff;
+}
+
+.account-field {
+	margin-bottom: 24px;
+}
+
+.account-field label {
+	display: block;
+	font-size: 12px;
+	color: #555;
+	margin-bottom: 6px;
+}
+
+.account-badge {
+	display: inline-block;
+	background: #1a1a1a;
+	border: 1px solid #2e2e2e;
+	padding: 3px 8px;
+	font-size: 12px;
+	color: #888;
+	margin-left: 8px;
+}
+
+.account-badge.github {
+	border-color: #444;
+	color: #aaa;
+}
+
+.account-link-row {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	margin-top: 4px;
+}
+
+.danger-zone {
+	margin-top: 40px;
+	border-top: 1px solid #1f1f1f;
+	padding-top: 24px;
+}
+
+.danger-zone h3 {
+	color: #ff5555;
+	font-size: 15px;
+	margin-bottom: 12px;
+}
+
+.delete-account-btn {
+	background: transparent;
+	border: 1px solid #ff5555;
+	color: #ff5555;
+	font-family: 'mcfont', sans-serif;
+	font-size: 14px;
+	padding: 7px 16px;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.delete-account-btn:hover {
+	background: #ff5555;
+	color: #ffffff;
+}
+
+/* username gate modal — no close button, blocking */
+.gate-overlay {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.92);
+	z-index: 999;
+	align-items: center;
+	justify-content: center;
+}
+
+.gate-overlay.visible {
+	display: flex;
+}
+
+.gate-box {
+	background: #1a1a1a;
+	border: 1px solid #2e2e2e;
+	padding: 36px 40px;
+	min-width: 360px;
+	max-width: 460px;
+	width: 100%;
+}
+
+.gate-box h3 {
+	color: #fff;
+	font-size: 18px;
+	margin-bottom: 8px;
+	font-family: 'mcfontb', sans-serif;
+}
+
+.gate-box p {
+	font-size: 13px;
+	color: #555;
+	margin-bottom: 24px;
+	line-height: 1.5;
+}
+
+.gate-box label {
+	display: block;
+	font-size: 11px;
+	color: #555;
+	margin-bottom: 6px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.gate-input {
+	width: 100%;
+	background: #111;
+	border: 1px solid #2e2e2e;
+	color: #fff;
+	font-family: 'mcfont', sans-serif;
+	font-size: 15px;
+	padding: 10px 12px;
+	outline: none;
+	transition: border-color 0.2s;
+}
+
+.gate-input:focus {
+	border-color: #05ee93;
+}
+
+.gate-hint {
+	font-size: 11px;
+	color: #333;
+	margin-top: 5px;
+}
+
+.gate-err {
+	font-size: 12px;
+	color: #ff5555;
+	margin-top: 8px;
+	display: none;
+}
+
+.gate-err.visible {
+	display: block;
+}
+
+.gate-btn {
+	margin-top: 20px;
+	width: 100%;
+	padding: 10px;
+	background: #05ee93;
+	border: none;
+	color: #0c0c0c;
+	font-family: 'mcfontb', sans-serif;
+	font-size: 15px;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.gate-btn:hover {
+	background: #78e3a6;
+}
+
+.gate-btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.hidden {
+    display: none !important;
+}
+  </style>
+</head>
+<body>
+
+  <!-- username gate — shown if user has no username, cannot be dismissed -->
+  <div class="gate-overlay" id="gate-overlay">
+    <div class="gate-box">
+      <h3>Welcome to mcb<g>Code</g></h3>
+      <p>Before you continue, you need to set a username. This is how others will find you on the platform.</p>
+      <label>Username</label>
+      <input class="gate-input" type="text" id="gate-username" maxlength="32" placeholder="idktoast" autocomplete="off">
+      <div class="gate-hint">letters, numbers, _ and . only</div>
+      <div class="gate-err" id="gate-err"></div>
+      <button class="gate-btn" id="gate-btn" onclick="submitGateUsername()">Set Username</button>
+    </div>
+  </div>
+
+  <!-- new project modal -->
+  <div class="modal-overlay" id="new-project-modal">
+    <div class="modal-box">
+      <h3>New Project</h3>
+      <div class="modal-field">
+        <label>Project Name</label>
+        <input type="text" id="np-name" maxlength="72" placeholder="My Awesome Addon">
+      </div>
+      <div class="modal-field">
+        <label>Description<span style="color:#333">(optional)</span></label>
+        <textarea id="np-desc" rows="3" maxlength="256" placeholder="What does this addon do?"></textarea>
+      </div>
+      <div class="modal-err" id="np-err"></div>
+      <div class="modal-actions">
+        <button class="confirm-no" onclick="closeNewProject()">Cancel</button>
+        <button class="save-btn" id="np-submit" onclick="submitNewProject()">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- generic confirm modal — used for delete project AND leave collaboration -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-box">
+      <p id="confirm-title">Are you sure?</p>
+      <small id="confirm-projname"></small>
+      <div class="confirm-actions">
+        <button class="confirm-yes" id="confirm-yes-btn" onclick="runConfirmedAction()">Confirm</button>
+        <button class="confirm-no" onclick="closeConfirm()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- delete account confirm step 1 -->
+  <div class="confirm-overlay" id="del-account-1">
+    <div class="confirm-box">
+      <p>Delete your account?</p>
+      <small>This will permanently delete your account, all projects, and settings.</small>
+      <div class="confirm-actions">
+        <button class="confirm-yes" onclick="delAccountStep2()">Yes, continue</button>
+        <button class="confirm-no" onclick="document.getElementById('del-account-1').classList.remove('visible')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- delete account confirm step 2 -->
+  <div class="confirm-overlay" id="del-account-2">
+    <div class="confirm-box">
+      <p>Are you absolutely sure?</p>
+      <small>There is no undo. Everything will be gone forever.</small>
+      <div class="confirm-actions">
+        <button class="confirm-yes" onclick="confirmDeleteAccount()">Delete my account</button>
+        <button class="confirm-no" onclick="document.getElementById('del-account-2').classList.remove('visible')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="topnav">
+    <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">&#9776;</button>
+    <span class="topnav-title">mcb<g>Code</g></span>
+    <div class="topnav-right">
+	<span id="user-email"></span>
+    <div id="notif-placeholder"></div>
+    <script src="https://mcbcode.com/elements/notifications.js"></script>
+    </div>
+  </div>
+
+  <div class="sidebar-scrim" id="sidebar-scrim" onclick="toggleSidebar()"></div>
+
+  <div class="layout">
+    <div class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <div class="sidebar-label">Main</div>
+        <div class="sidebar-item active" data-target="section-home">
+          <img src="https://mcbcode.com/theme/favicon.png" alt="">
+          <span>Home</span>
+        </div>
+        <div class="sidebar-item" data-target="section-projects">
+          <img src="https://mcbcode.com/img/icons/search.png" alt="">
+          <a href="https://app.mcbcode.com/profile"><span>Profile</span></a>
+        </div>
+        <div class="sidebar-label">Tools</div>
+        <div class="sidebar-item" data-target="section-editor">
+          <img src="https://mcbcode.com/img/icons/pencil.png" alt="">
+          <a href="https://app.mcbcode.com/tools"><span>Editors</span></a>
+        </div>
+        <div class="sidebar-bottom">
+          <div class="sidebar-item" data-target="section-account" onclick="navTo(this)">
+            <img src="https://mcbcode.com/img/icons/slashdot.png" alt="">
+            <a href="https://app.mcbcode.com/settings"><span>Settings</span></a>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="main" id="main">
+    <script src="https://mcbcode.com/elements/obsidian.js"></script>
+	<br><br>
+      <!-- HOME -->
+      <div class="dash-section" id="section-home">
+        <h2>Home</h2>
+        <p>Welcome back to mcb<g>Code</g>.</p>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat-value" id="stat-projects">—</div>
+            <div class="stat-label">Projects</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="stat-points">-</div>
+            <div class="stat-label">Points - Spend them <a href="https://mcbcode.com/points">here</a></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div class="dash-section" id="section-projects">
+        <h2>Projects</h2>
+        <p>Your Minecraft addon projects. Click a project to open it.</p>
+        <div class="project-toolbar">
+          <span class="project-list-header" id="projects-limit-label"></span>
+          <button class="new-project-btn" id="new-proj-btn" onclick="openNewProject()">+ New Project</button>
+        </div>
+        <div class="project-list" id="project-list">
+          <div class="empty" id="projects-empty" style="display:none;">No projects yet. Hit "New Project" to get started.</div>
+        </div>
+      </div>
+
+      <!-- EDITOR -->
+      <div class="dash-section" id="section-editor">
+        <h2>Editor</h2>
+        <p>Quick access to the mcbCode editors.</p>
+        <div class="card-grid">
+          <div class="card" onclick="window.location.href='/editor/mcfunction'">
+            <h3>mcfunction</h3>
+            <p>Launch the mcfunction code editor</p>
+          </div>
+
+          <div class="card" onclick="window.location.href='/editor/json'">
+            <h3>json</h3>
+            <p>Launch the JSON code editor</p>
+          </div>
+
+          <div class="card" onclick="window.location.href='/editor/javascript'">
+            <h3>javascript</h3>
+            <p>Launch the JavaScript code editor</p>
+          </div>
+
+          <div class="card" onclick="window.location.href='/editor/manifest'">
+            <h3>manifest.json</h3>
+            <p>Launch the manifest code editor</p>
+          </div>
+
+          <div class="card" onclick="window.location.href='/pixel'">
+            <h3>pixel</h3>
+            <p>Launch the pixel editor</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ACCOUNT -->
+      <div class="dash-section" id="section-account">
+        <h2>Account</h2>
+        <p>Your login and account identity.</p>
+        <br>
+        <div class="account-field">
+          <label>Email</label>
+          <span id="acct-email" style="color:#fff; font-size:14px;"></span>
+          <span class="account-badge github" id="acct-github-badge" style="display:none;">GitHub</span>
+        </div>
+        <div class="account-field">
+          <label>Username</label>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="text" id="acct-username" class="text-input" style="width:200px;" maxlength="32" placeholder="set a username">
+            <button class="save-btn" onclick="saveUsername()">Save</button>
+            <span class="save-msg" id="username-msg"></span>
+          </div>
+          <small style="color:#444; font-size:11px; display:block; margin-top:4px;">letters, numbers, _ and - only</small>
+        </div>
+        <div class="account-field">
+          <label>Profile</label>
+          <div class="account-link-row">
+            <a href="#" id="acct-view-profile" class="proj-btn">View my profile</a>
+          </div>
+        </div>
+        <div class="danger-zone">
+          <h3>Danger Zone</h3>
+          <p style="font-size:13px; margin-bottom:14px;">Deleting your account removes all your projects and settings permanently.</p>
+          <button class="delete-account-btn" onclick="askDeleteAccount()">Delete Account</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const AUTH = "https://auth.mcbcode.com";
+
+    // generic confirm-modal state — one modal, reused for delete project + leave collab
+    let pendingAction = null;   // { type: "delete_project" | "leave_collab", code, row }
+
+    (async () => {
+      try {
+        const res = await fetch(`${AUTH}/me`, { credentials: "include" });
+        if (!res.ok) return window.location.href = "/account";
+        const data = await res.json();
+        document.getElementById("user-email").textContent = data.email;
+        document.getElementById("acct-email").textContent = data.email;
+        document.getElementById("stat-points").textContent = data.points ?? 0;
+        if (data.is_github) document.getElementById("acct-github-badge").style.display = "";
+        if (data.username) {
+          document.getElementById("acct-username").value = data.username;
+          document.getElementById("acct-view-profile").href = `/profile/${encodeURIComponent(data.username)}`;
+        } else {
+          // no username — show the gate, block everything
+          document.getElementById("gate-overlay").classList.add("visible");
+          setTimeout(() => document.getElementById("gate-username").focus(), 100);
+          return; // don't load anything else until they set one
+        }
+      } catch { return window.location.href = "/account"; }
+
+      await loadProjects();
+    })();
+
+    // ---- USERNAME GATE ----
+    async function submitGateUsername() {
+      const val = document.getElementById("gate-username").value.trim().replace(/[^a-zA-Z0-9_\-]/g, "");
+      const err = document.getElementById("gate-err");
+      const btn = document.getElementById("gate-btn");
+      if (!val) { err.textContent = "Username can't be empty."; err.classList.add("visible"); return; }
+      if (val.length < 2) { err.textContent = "At least 2 characters please."; err.classList.add("visible"); return; }
+      btn.disabled = true;
+      try {
+        const res = await fetch(`${AUTH}/profile`, {
+          method: "POST", credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: val })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById("gate-overlay").classList.remove("visible");
+          document.getElementById("acct-username").value = val;
+          document.getElementById("acct-view-profile").href = `/profile/${encodeURIComponent(val)}`;
+          await loadProjects();
+        } else {
+          err.textContent = data.error || "Something went wrong.";
+          err.classList.add("visible");
+        }
+      } catch {
+        err.textContent = "Network error. Try again.";
+        err.classList.add("visible");
+      }
+      btn.disabled = false;
+    }
+
+    document.getElementById("gate-username").addEventListener("keydown", e => {
+      if (e.key === "Enter") submitGateUsername();
+    });
+
+    function escHtml(str) {
+      return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+    }
+
+    function formatDate(str) {
+      if (!str) return "";
+      const d = new Date(str.endsWith("Z") ? str : str + "Z");
+      return d.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"numeric" });
+    }
+
+    async function loadProjects() {
+      const list  = document.getElementById("project-list");
+      const empty = document.getElementById("projects-empty");
+      const label = document.getElementById("projects-limit-label");
+      const btn   = document.getElementById("new-proj-btn");
+
+      list.innerHTML = "";
+
+      try {
+        const res = await fetch(`${AUTH}/projects`, { credentials: "include" });
+        if (!res.ok) throw new Error();
+
+        const { projects, collab_projects, max_saves } = await res.json();
+
+        document.getElementById("stat-projects").textContent = projects.length;
+        label.textContent = `${projects.length} / ${max_saves} projects used`;
+        btn.disabled = projects.length >= max_saves;
+
+        if (projects.length === 0 && collab_projects.length === 0) {
+          empty.style.display = "";
+          return;
+        }
+
+        empty.style.display = "none";
+
+        function addHeading(text) {
+          const h = document.createElement("h3");
+          h.textContent = text;
+          h.style.margin = "18px 0 10px";
+          h.style.color = "#fff";
+          list.appendChild(h);
+        }
+
+        function addProject(proj, collaborator = false) {
+          const row = document.createElement("div");
+          row.className = "project-row";
+          row.id = `row-${escHtml(proj.share_code)}`;
+          row.onclick = () => openProject(proj.share_code);
+
+          const isPublic = proj.is_public === 1 || proj.is_public === true;
+
+          row.innerHTML = `
+            <div class="project-info">
+              <div class="project-name">
+                ${escHtml(proj.name)}
+                <span class="proj-badge${isPublic ? " public" : ""}">
+                  ${isPublic ? "public" : "private"}
+                </span>
+              </div>
+
+              ${
+                collaborator
+                  ? `<div class="project-desc">Owner: ${escHtml(proj.owner_username)}</div>`
+                  : (proj.description
+                      ? `<div class="project-desc">${escHtml(proj.description)}</div>`
+                      : "")
+              }
+            </div>
+
+            <div class="project-date">
+              ${escHtml(formatDate(proj.updated_at))}
+            </div>
+
+            <div class="project-actions">
+              ${
+                collaborator
+                  ? `<button class="proj-btn danger" data-leave-btn>Leave</button>`
+                  : `<button class="proj-btn danger" data-delete-btn>Delete</button>`
+              }
+            </div>
+          `;
+
+          // stop the action button from also triggering the row's "open project" click
+          const actionBtn = row.querySelector("[data-delete-btn], [data-leave-btn]");
+          actionBtn.addEventListener("click", e => {
+            e.stopPropagation();
+            if (actionBtn.hasAttribute("data-delete-btn")) {
+              askDeleteProject(proj.share_code, proj.name, row);
+            } else {
+              askLeaveCollab(proj.share_code, proj.name, row);
+            }
+          });
+
+          list.appendChild(row);
+        }
+
+        if (projects.length) {
+          addHeading("Owned Projects");
+          projects.forEach(p => addProject(p));
+        }
+
+        if (collab_projects.length) {
+          addHeading("Collaborating On");
+          collab_projects.forEach(p => addProject(p, true));
+        }
+
+      } catch {
+        empty.textContent = "Could not load projects.";
+        empty.style.display = "";
+      }
+    }
+
+    function openProject(shareCode) { window.location.href = `/project/${shareCode}/`; }
+
+    function openNewProject() {
+      document.getElementById("np-name").value = "";
+      document.getElementById("np-desc").value = "";
+      document.getElementById("np-err").textContent = "";
+      document.getElementById("np-err").classList.remove("visible");
+      document.getElementById("new-project-modal").classList.add("visible");
+      setTimeout(() => document.getElementById("np-name").focus(), 50);
+    }
+
+    function closeNewProject() { document.getElementById("new-project-modal").classList.remove("visible"); }
+
+    async function submitNewProject() {
+      const name = document.getElementById("np-name").value.trim();
+      const desc = document.getElementById("np-desc").value.trim();
+      const err  = document.getElementById("np-err");
+      const btn  = document.getElementById("np-submit");
+      if (!name) { err.textContent = "Project name is required."; err.classList.add("visible"); return; }
+      btn.disabled = true; btn.textContent = "Creating...";
+      try {
+        const res = await fetch(`${AUTH}/projects`, {
+          method: "POST", credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, description: desc })
+        });
+        const data = await res.json();
+        if (!res.ok) { err.textContent = data.error || "Failed to create project."; err.classList.add("visible"); return; }
+        closeNewProject();
+        window.location.href = `/project/${data.share_code}/`;
+      } catch { err.textContent = "Something went wrong."; err.classList.add("visible"); }
+      finally { btn.disabled = false; btn.textContent = "Create"; }
+    }
+
+    // ---- GENERIC CONFIRM MODAL (delete project / leave collaboration) ----
+    function askDeleteProject(shareCode, name, row) {
+      pendingAction = { type: "delete_project", code: shareCode, row };
+      document.getElementById("confirm-title").textContent = "Delete this project?";
+      document.getElementById("confirm-projname").textContent = name;
+      document.getElementById("confirm-yes-btn").textContent = "Delete";
+      document.getElementById("confirm-overlay").classList.add("visible");
+    }
+
+    function askLeaveCollab(shareCode, name, row) {
+      pendingAction = { type: "leave_collab", code: shareCode, row };
+      document.getElementById("confirm-title").textContent = "Leave this project?";
+      document.getElementById("confirm-projname").textContent = `you'll lose access to "${name}" — you can only rejoin if the owner adds you again.`;
+      document.getElementById("confirm-yes-btn").textContent = "Leave";
+      document.getElementById("confirm-overlay").classList.add("visible");
+    }
+
+    function closeConfirm() {
+      pendingAction = null;
+      document.getElementById("confirm-overlay").classList.remove("visible");
+    }
+
+    async function runConfirmedAction() {
+      if (!pendingAction) return closeConfirm();
+      const { type, code, row } = pendingAction;
+      closeConfirm();
+      try {
+        if (type === "delete_project") {
+          const res = await fetch(`${AUTH}/project?code=${encodeURIComponent(code)}`, { method: "DELETE", credentials: "include" });
+          if (res.ok) { row && row.remove(); await loadProjects(); }
+        } else if (type === "leave_collab") {
+          const res = await fetch(`${AUTH}/project/collaborators?code=${encodeURIComponent(code)}&user_id=${encodeURIComponent(window._myId || "")}`, {
+            method: "DELETE", credentials: "include"
+          });
+          // fallback in case the collaborators endpoint requires the owner: use the "leave all" self-service route instead
+          if (!res.ok) {
+            await fetch(`${AUTH}/me/collaborations`, { method: "DELETE", credentials: "include" });
+          }
+          row && row.remove();
+          await loadProjects();
+        }
+      } catch {}
+    }
+
+    document.getElementById("confirm-overlay").addEventListener("click", e => { if (e.target === e.currentTarget) closeConfirm(); });
+    document.getElementById("new-project-modal").addEventListener("click", e => { if (e.target === e.currentTarget) closeNewProject(); });
+
+    function askDeleteAccount() { document.getElementById("del-account-1").classList.add("visible"); }
+    function delAccountStep2() {
+      document.getElementById("del-account-1").classList.remove("visible");
+      document.getElementById("del-account-2").classList.add("visible");
+    }
+    async function confirmDeleteAccount() {
+      document.getElementById("del-account-2").classList.remove("visible");
+      try { await fetch(`${AUTH}/account`, { method: "DELETE", credentials: "include" }); } catch {}
+      window.location.href = "/account";
+    }
+
+    async function saveUsername() {
+      const val = document.getElementById("acct-username").value.trim();
+      const msg = document.getElementById("username-msg");
+      if (!val) return;
+      try {
+        const res = await fetch(`${AUTH}/profile`, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: val }) });
+        const data = await res.json();
+        if (res.ok) {
+          msg.textContent = "Saved!"; msg.className = "save-msg ok";
+          document.getElementById("acct-view-profile").href = `/profile/${encodeURIComponent(val)}`;
+        }
+        else { msg.textContent = data.error || "Error"; msg.className = "save-msg err"; }
+      } catch { msg.textContent = "Error"; msg.className = "save-msg err"; }
+      setTimeout(() => { msg.className = "save-msg"; msg.textContent = ""; }, 3000);
+    }
+
+    // ---- SIDEBAR (overlay + blur, never shifts content) ----
+    let sidebarOpen = false;
+    function toggleSidebar() {
+      sidebarOpen = !sidebarOpen;
+      document.getElementById("sidebar").classList.toggle("expanded", sidebarOpen);
+      document.getElementById("sidebar-scrim").classList.toggle("visible", sidebarOpen);
+      document.getElementById("main").classList.toggle("blurred", sidebarOpen);
+    }
+
+    function navTo(el) {
+      document.querySelectorAll(".sidebar-item").forEach(i => i.classList.remove("active"));
+      el.classList.add("active");
+      const target = document.getElementById(el.dataset.target);
+      if (target) target.scrollIntoView({ behavior: "smooth" });
+      // close the sidebar after navigating, since it's an overlay now
+      if (sidebarOpen) toggleSidebar();
+    }
+
+    async function doLogout() {
+      await fetch(`${AUTH}/logout`, { method: "POST", credentials: "include" });
+      window.location.href = "/account";
+    }
+
+	  document.getElementById("get-obsidian-btn").addEventListener("click", async () => {
+    const res = await fetch("https://auth.mcbcode.com/stripe/checkout", {
+        method: "POST",
+        credentials: "include"
+    });
+    const data = await res.json();
+    if (data.ok) {
+        window.location.href = data.checkout_url;
+    } else {
+        alert(data.error || "something went wrong starting checkout");
+    }
+});
+  </script>
+
+  <script src="https://mcbcode.com/elements/feedback.js"></script>
+	
+  <script data-goatcounter="https://mcbcode.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
