@@ -31,10 +31,6 @@ a {
 	transition: color 0.2s;
 }
 
-a:hover {
-	color: #05ee93;
-}
-
 g {
 	color: #05ee93;
 }
@@ -90,11 +86,6 @@ c {
 	transition: color 0.2s, border-color 0.2s;
 }
 
-.logout-btn:hover {
-	color: #ff5555;
-	border-color: #ff5555;
-}
-
 .sidebar-toggle {
 	background: none;
 	border: none;
@@ -107,111 +98,9 @@ c {
 	flex-shrink: 0;
 }
 
-.sidebar-toggle:hover {
-	color: #05ee93;
-}
-
 .layout {
 	margin-top: 56px;
 	min-height: calc(100vh - 56px);
-}
-
-/* ---- SIDEBAR: always an overlay, never pushes content ---- */
-.sidebar {
-	width: 75%;
-	background: #101010;
-	border-right: 1px solid #1f1f1f;
-	display: flex;
-	flex-direction: column;
-	position: fixed;
-	top: 56px;
-	bottom: 0;
-	left: 0;
-	transform: translateX(-100%);
-	transition: transform 0.22s ease;
-	z-index: 250;
-	box-shadow: 4px 0 24px rgba(0,0,0,0.5);
-}
-
-.sidebar.expanded {
-	transform: translateX(0);
-}
-
-.sidebar-scrim {
-	display: none;
-	position: fixed;
-	top: 56px;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(0,0,0,0.55);
-	backdrop-filter: blur(3px);
-	z-index: 200;
-}
-
-.sidebar-scrim.visible {
-	display: block;
-}
-
-.sidebar-nav {
-	display: flex;
-	flex-direction: column;
-	padding: 12px 0;
-	gap: 2px;
-	flex: 1;
-	overflow-y: auto;
-}
-
-.sidebar-item {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	padding: 10px 14px;
-	cursor: pointer;
-	color: #888;
-	font-size: 14px;
-	white-space: nowrap;
-	transition: background 0.2s, color 0.2s;
-	border-left: 3px solid transparent;
-}
-
-.sidebar-item:hover {
-	background: #1a1a1a;
-	color: #ffffff;
-}
-
-.sidebar-item.active {
-	background: #1a1a1a;
-	color: #05ee93;
-	border-left-color: #05ee93;
-}
-
-.sidebar-item img {
-	width: 24px;
-	height: 24px;
-	flex-shrink: 0;
-	image-rendering: pixelated;
-	opacity: 0.7;
-	transition: opacity 0.2s;
-}
-
-.sidebar-item:hover img,
-.sidebar-item.active img {
-	opacity: 1;
-}
-
-.sidebar-label {
-	font-size: 12px;
-	color: #444;
-	line-height: 0.4em;
-	font-family: mcfontb;
-	padding: 16px 14px 4px;
-	white-space: nowrap;
-}
-
-.sidebar-bottom {
-	border-top: 1px solid #1f1f1f;
-	padding: 8px 0;
 }
 
 .main {
@@ -888,11 +777,14 @@ c {
     </div>
   </div>
 
+
+
+
+
+
   <div class="topnav">
-    <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">&#9776;</button>
     <span class="topnav-title">mcb<g>Code</g></span>
     <div class="topnav-right">
-	<span id="user-email"></span>
     <div id="notif-placeholder"></div>
     <script src="https://mcbcode.com/elements/notifications.js"></script>
     </div>
@@ -901,30 +793,6 @@ c {
   <div class="sidebar-scrim" id="sidebar-scrim" onclick="toggleSidebar()"></div>
 
   <div class="layout">
-    <div class="sidebar" id="sidebar">
-      <nav class="sidebar-nav">
-        <div class="sidebar-label">Main</div>
-        <div class="sidebar-item active" data-target="section-home">
-          <img src="https://mcbcode.com/theme/favicon.png" alt="">
-          <span>Home</span>
-        </div>
-        <div class="sidebar-item" data-target="section-projects">
-          <img src="https://mcbcode.com/img/icons/search.png" alt="">
-          <a href="https://app.mcbcode.com/profile"><span>Profile</span></a>
-        </div>
-        <div class="sidebar-label">Tools</div>
-        <div class="sidebar-item" data-target="section-editor">
-          <img src="https://mcbcode.com/img/icons/pencil.png" alt="">
-          <a href="https://app.mcbcode.com/tools"><span>Editors</span></a>
-        </div>
-        <div class="sidebar-bottom">
-          <div class="sidebar-item" data-target="section-account" onclick="navTo(this)">
-            <img src="https://mcbcode.com/img/icons/slashdot.png" alt="">
-            <a href="https://app.mcbcode.com/settings"><span>Settings</span></a>
-          </div>
-        </div>
-      </nav>
-    </div>
 
     <div class="main" id="main">
     <script src="https://mcbcode.com/elements/obsidian.js"></script>
@@ -935,12 +803,11 @@ c {
         <p>Welcome back to mcb<g>Code</g>.</p>
         <div class="stat-row">
           <div class="stat">
-            <div class="stat-value" id="stat-projects">—</div>
+            <div class="stat-value" id="stat-projects">0</div>
             <div class="stat-label">Projects</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value" id="stat-points">-</div>
-            <div class="stat-label">Points - Spend them <a href="https://mcbcode.com/points">here</a></div>
+            <br><br>
+            <div class="stat-value" id="stat-points">0</div>
+            <div class="stat-label">Points - Spend them <a href="https://app.mcbcode.com/points">here</a></div>
           </div>
         </div>
       </div>
@@ -948,7 +815,7 @@ c {
       <!-- PROJECTS -->
       <div class="dash-section" id="section-projects">
         <h2>Projects</h2>
-        <p>Your Minecraft addon projects. Click a project to open it.</p>
+        <p>Your projects. Click one to open it.</p>
         <div class="project-toolbar">
           <span class="project-list-header" id="projects-limit-label"></span>
           <button class="new-project-btn" id="new-proj-btn" onclick="openNewProject()">+ New Project</button>
@@ -960,66 +827,34 @@ c {
 
       <!-- EDITOR -->
       <div class="dash-section" id="section-editor">
-        <h2>Editor</h2>
+        <h2>Editors</h2>
         <p>Quick access to the mcbCode editors.</p>
         <div class="card-grid">
-          <div class="card" onclick="window.location.href='/editor/mcfunction'">
+          <div class="card" onclick="window.location.href='https://app.mcbcode.com/editor/mcfunction'">
             <h3>mcfunction</h3>
             <p>Launch the mcfunction code editor</p>
           </div>
 
-          <div class="card" onclick="window.location.href='/editor/json'">
-            <h3>json</h3>
-            <p>Launch the JSON code editor</p>
-          </div>
-
-          <div class="card" onclick="window.location.href='/editor/javascript'">
-            <h3>javascript</h3>
-            <p>Launch the JavaScript code editor</p>
-          </div>
-
-          <div class="card" onclick="window.location.href='/editor/manifest'">
-            <h3>manifest.json</h3>
-            <p>Launch the manifest code editor</p>
-          </div>
-
-          <div class="card" onclick="window.location.href='/pixel'">
+          <div class="card" onclick="window.location.href='https://app.mcbcode.com/pixel'">
             <h3>pixel</h3>
             <p>Launch the pixel editor</p>
           </div>
 
-        </div>
-      </div>
+          <div class="card" onclick="window.location.href='https://app.mcbcode.com/editor/json'">
+            <h3>json</h3>
+            <p>Launch the JSON code editor</p>
+          </div>
 
-      <!-- ACCOUNT -->
-      <div class="dash-section" id="section-account">
-        <h2>Account</h2>
-        <p>Your login and account identity.</p>
-        <br>
-        <div class="account-field">
-          <label>Email</label>
-          <span id="acct-email" style="color:#fff; font-size:14px;"></span>
-          <span class="account-badge github" id="acct-github-badge" style="display:none;">GitHub</span>
-        </div>
-        <div class="account-field">
-          <label>Username</label>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <input type="text" id="acct-username" class="text-input" style="width:200px;" maxlength="32" placeholder="set a username">
-            <button class="save-btn" onclick="saveUsername()">Save</button>
-            <span class="save-msg" id="username-msg"></span>
+          <div class="card" onclick="window.location.href='https://app.mcbcode.com/editor/javascript'">
+            <h3>javascript</h3>
+            <p>Launch the JavaScript code editor</p>
           </div>
-          <small style="color:#444; font-size:11px; display:block; margin-top:4px;">letters, numbers, _ and - only</small>
-        </div>
-        <div class="account-field">
-          <label>Profile</label>
-          <div class="account-link-row">
-            <a href="#" id="acct-view-profile" class="proj-btn">View my profile</a>
+
+          <div class="card" onclick="window.location.href='https://app.mcbcode.com/editor/manifest'">
+            <h3>manifest.json</h3>
+            <p>Launch the manifest code editor</p>
           </div>
-        </div>
-        <div class="danger-zone">
-          <h3>Danger Zone</h3>
-          <p style="font-size:13px; margin-bottom:14px;">Deleting your account removes all your projects and settings permanently.</p>
-          <button class="delete-account-btn" onclick="askDeleteAccount()">Delete Account</button>
+
         </div>
       </div>
 
@@ -1310,24 +1145,6 @@ c {
       setTimeout(() => { msg.className = "save-msg"; msg.textContent = ""; }, 3000);
     }
 
-    // ---- SIDEBAR (overlay + blur, never shifts content) ----
-    let sidebarOpen = false;
-    function toggleSidebar() {
-      sidebarOpen = !sidebarOpen;
-      document.getElementById("sidebar").classList.toggle("expanded", sidebarOpen);
-      document.getElementById("sidebar-scrim").classList.toggle("visible", sidebarOpen);
-      document.getElementById("main").classList.toggle("blurred", sidebarOpen);
-    }
-
-    function navTo(el) {
-      document.querySelectorAll(".sidebar-item").forEach(i => i.classList.remove("active"));
-      el.classList.add("active");
-      const target = document.getElementById(el.dataset.target);
-      if (target) target.scrollIntoView({ behavior: "smooth" });
-      // close the sidebar after navigating, since it's an overlay now
-      if (sidebarOpen) toggleSidebar();
-    }
-
     async function doLogout() {
       await fetch(`${AUTH}/logout`, { method: "POST", credentials: "include" });
       window.location.href = "/account";
@@ -1346,9 +1163,7 @@ c {
     }
 });
   </script>
-
-  <script src="https://mcbcode.com/elements/feedback.js"></script>
 	
-  <script data-goatcounter="https://mcbcode.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
 </body>
 </html>
