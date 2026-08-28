@@ -1,0 +1,1203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="https://mcbcode.com/theme/favicon.png">
+  <link rel="stylesheet" href="https://mcbcode.com/theme/site.css">
+
+  <title>mcbCode | Profile</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; background: #111214; color: #c8c8c8; font-family: 'mcfont', sans-serif; overflow-x: hidden; }
+    a { text-decoration: none; color: #fff; transition: color 0.2s; }
+    a:hover { color: #05ee93; }
+    g { color: #05ee93; }
+
+    /* ---- TOPNAV ---- */
+    .topnav { position: fixed; top: 0; left: 0; right: 0; height: 48px; background: #161719; border-bottom: 1px solid #2a2a2e; display: flex; align-items: center; padding: 0 16px; z-index: 200; gap: 10px; }
+    .topnav-logo { font-size: 18px; color: #fff; font-family: 'mcfontb', sans-serif; white-space: nowrap; }
+    .topnav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .nav-btn { background: #222326; border: 1px solid #343438; color: #aaa; font-family: 'mcfont', sans-serif; font-size: 12px; padding: 5px 10px; cursor: pointer; transition: color 0.2s, border-color 0.2s; white-space: nowrap; text-decoration: none; display: inline-block; }
+    .nav-btn:hover { color: #05ee93; border-color: #05ee93; }
+
+    /* ---- SEARCH ---- */
+    .search-stabilizer { width: 100%; min-height: 84px; display: flex; justify-content: center; }
+    .search-wrap { transition: all 0.3s ease; }
+
+    .search-wrap.centered {
+      position: static;
+      width: min(440px, calc(100vw - 32px));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .search-wrap.centered .search-logo { display: block; }
+    .search-wrap.centered .search-input-row { width: 100%; }
+
+    .search-wrap.sticky-top {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      right: 0;
+      padding: 10px 16px;
+      background: #161719;
+      border-bottom: 1px solid #2a2a2e;
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .search-wrap.sticky-top .search-logo { display: none; }
+    .search-wrap.sticky-top .search-input-row { width: 100%; max-width: 400px; margin: 0 auto; }
+
+    .search-wrap.in-nav { position: static; transform: none; width: 200px; display: flex; flex-direction: column; gap: 0; }
+    .search-wrap.in-nav .search-logo { display: none; }
+    .search-wrap.in-nav .search-input-row { width: 100%; }
+
+    .search-logo { display: none; font-size: 26px; color: #fff; font-family: 'mcfontb', sans-serif; text-align: center; }
+    .search-logo g { color: #05ee93; }
+    .search-logo small { display: block; font-size: 13px; color: #555; margin-top: 4px; font-family: 'mcfont', sans-serif; }
+
+    .search-input-row { position: relative; }
+    .search-input { width: 100%; background: #1a1c1f; border: 1px solid #343438; color: #fff; font-family: 'mcfont', sans-serif; font-size: 14px; padding: 10px 14px; outline: none; transition: border-color 0.2s; }
+    .search-wrap.in-nav .search-input { font-size: 12px; padding: 6px 10px; }
+    .search-wrap.sticky-top .search-input { font-size: 13px; padding: 7px 12px; }
+    .search-input:focus { border-color: #00b2ff; }
+    .autocomplete-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1c1f; border: 1px solid #343438; border-top: none; z-index: 300; display: none; }
+    .autocomplete-list.open { display: block; }
+    .ac-item { padding: 8px 14px; font-size: 13px; color: #aaa; cursor: pointer; transition: background 0.12s; }
+    .search-wrap.in-nav .ac-item { padding: 6px 10px; font-size: 12px; }
+    .ac-item:hover, .ac-item.selected { background: #222326; color: #fff; }
+
+    /* ---- LANDING ---- */
+    .landing { margin-top: 48px; min-height: calc(100vh - 48px); padding-top: 80px; padding-bottom: 80px; display: flex; flex-direction: column; align-items: center; }
+    .landing.hidden { display: none; }
+
+    .recent-section { margin-top: 40px; width: min(1200px, 90vw); }
+    .recent-label { font-size: 13px; color: #444; font-family: 'mcfontb', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; text-align: center; }
+    .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; padding-right: 4px; }
+    .recent-card { background: #161719; border: 1px solid #1e1e22; padding: 22px 24px; cursor: pointer; transition: border-color 0.2s, background 0.2s; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+    .recent-card:hover { border-color: #343438; background: #1a1c1f; }
+    .recent-avatar { width: 64px; height: 64px; background: #222326; border: 1px solid #343438; display: flex; align-items: center; justify-content: center; font-size: 26px; font-family: 'mcfontb', sans-serif; color: #555; flex-shrink: 0; overflow: hidden; }
+    .recent-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .recent-name { font-size: 16px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+    .recent-rank-badge { font-size: 11px; padding: 3px 9px; width: fit-content; }
+    .recent-loading, .recent-empty { font-size: 13px; color: #444; text-align: center; padding: 30px 0; grid-column: 1 / -1; }
+
+    /* ---- PROFILE PAGE (REARRANGED UI) ---- */
+    .page { margin-top: 48px; display: none; flex-direction: column; }
+    .page.visible { display: flex; }
+
+    /* Profile Banner (Top) */
+    .profile-banner {
+      background: #161719;
+      border-bottom: 1px solid #2a2a2e;
+      padding: 40px 10vw;
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .profile-avatar-wrap { position: relative; width: 112px; flex-shrink: 0; }
+    .profile-avatar { width: 112px; height: 112px; background: #1e1e22; border: 2px solid #343438; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #444; font-family: 'mcfontb', sans-serif; overflow: hidden; transition: border-color 0.2s; }
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-hint { font-size: 11px; color: #444; margin-top: 6px; transition: color 0.2s; display: none; text-align: center; }
+
+    .profile-avatar-wrap.clickable { cursor: pointer; }
+    .profile-avatar-wrap.clickable:hover .profile-avatar { border-color: #00b2ff; }
+    .profile-avatar-wrap.clickable:hover .avatar-hint { color: #00b2ff; }
+    .profile-avatar-wrap.clickable .avatar-hint { display: block; }
+
+    .profile-main-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .username-row { display: flex; align-items: center; gap: 12px; }
+    .profile-username { font-size: 28px; color: #fff; font-family: 'mcfontb', sans-serif; line-height: 1.1; }
+    .profile-rank { display: none; width: fit-content; padding: 4px 8px; font-size: 12px; font-family: 'mcfont', sans-serif; }
+
+    .bio-row { display: flex; align-items: flex-start; gap: 8px; max-width: 600px; }
+    .bio-row-text { flex: 1; min-width: 0; }
+    .profile-bio { font-size: 14px; color: #888; line-height: 1.6; }
+    .profile-bio-empty { font-size: 14px; color: #444; font-style: italic; }
+    
+    .profile-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+    .profile-link { font-size: 12px; color: #00b2ff; display: flex; align-items: center; gap: 6px; background: #1a1c1f; border: 1px solid #2a2a2e; padding: 4px 8px; }
+    .profile-link:hover { border-color: #00b2ff; }
+    .profile-link img { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.85; }
+
+    .profile-side-stats {
+      width: 240px;
+      flex-shrink: 0;
+      border-left: 1px solid #2a2a2e;
+      padding-left: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .profile-points { font-size: 14px; color: #05ee93; font-family: 'mcfontb', sans-serif; }
+    .profile-email { font-size: 12px; color: #888; }
+    .profile-joined { font-size: 12px; color: #555; }
+
+    /* Edit components */
+    .icon-edit-btn { display: none; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 2px; flex-shrink: 0; opacity: 0.45; transition: opacity 0.15s, transform 0.15s; }
+    .icon-edit-btn:hover { opacity: 1; }
+    .icon-edit-btn.active { opacity: 1; transform: rotate(-8deg); }
+    .icon-edit-btn img { width: 14px; height: 14px; display: block; }
+
+    .edit-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
+    .edit-btn { font-size: 12px; color: #666; cursor: pointer; transition: color 0.15s; background: none; border: 1px solid #343438; font-family: 'mcfont', sans-serif; padding: 6px 12px; }
+    .edit-btn:hover { color: #00b2ff; border-color: #00b2ff; }
+
+    .edit-area { display: none; flex-direction: column; gap: 8px; margin-top: 8px; max-width: 400px; }
+    .edit-area.open { display: flex; }
+    .edit-input { width: 100%; background: #111214; border: 1px solid #343438; color: #fff; font-family: 'mcfont', sans-serif; font-size: 13px; padding: 7px 10px; outline: none; transition: border-color 0.2s; }
+    .edit-input:focus { border-color: #05ee93; }
+    .edit-textarea { width: 100%; background: #111214; border: 1px solid #343438; color: #fff; font-family: 'mcfont', sans-serif; font-size: 13px; padding: 7px 10px; outline: none; resize: vertical; min-height: 72px; transition: border-color 0.2s; }
+    .edit-textarea:focus { border-color: #05ee93; }
+    
+    .edit-save-row { display: flex; gap: 6px; align-items: center; }
+    .sm-btn { background: #222326; border: 1px solid #343438; color: #aaa; font-family: 'mcfont', sans-serif; font-size: 11px; padding: 4px 10px; cursor: pointer; transition: color 0.15s, border-color 0.15s; }
+    .sm-btn:hover { color: #05ee93; border-color: #05ee93; }
+    .sm-btn.primary { background: #05ee93; border-color: #05ee93; color: #0c0c0c; }
+    .sm-btn.primary:hover { background: #78e3a6; }
+    .inline-msg { font-size: 11px; }
+    .inline-msg.ok { color: #05ee93; }
+    .inline-msg.err { color: #ff5555; }
+
+    /* projects panel (Bottom) */
+    .projects-panel { padding: 48px 10vw; width: 100%; max-width: 1400px; margin: 0 auto; }
+    .projects-panel h2 { font-size: 15px; color: #00b2ff; font-family: 'mcfontb', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #1e1e22; padding-bottom: 10px; }
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+    .project-card { background: #161719; border: 1px solid #2a2a2e; padding: 20px 24px; cursor: pointer; transition: border-color 0.2s; }
+    .project-card:hover { border-color: #05ee93; }
+    .project-card-name { font-size: 16px; color: #fff; font-family: 'mcfontb', sans-serif; margin-bottom: 6px; }
+    .project-card-desc { font-size: 13px; color: #666; line-height: 1.5; }
+    .project-card-date { font-size: 11px; color: #444; margin-top: 14px; }
+    .no-projects { font-size: 13px; color: #444; padding: 40px 0; border: 1px dashed #2a2a2e; text-align: center; }
+
+    /* settings stuff */
+    .settings-panel { display: none; flex-direction: column; gap: 18px; max-width: 500px; margin: 40px auto; }
+    .settings-panel.visible { display: flex; }
+    .setting-row { display: flex; justify-content: space-between; align-items: center; background: #161719; border: 1px solid #2a2a2e; padding: 16px 20px; }
+    .setting-label { font-size: 13px; color: #ccc; }
+    .setting-desc { font-size: 11px; color: #555; margin-top: 5px; }
+    .toggle { position: relative; width: 40px; height: 22px; background: #222326; border: 1px solid #343438; cursor: pointer; flex-shrink: 0; margin-left: 16px; }
+    .toggle.on { background: #05ee93; border-color: #05ee93; }
+    .toggle-knob { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; transition: left 0.15s; }
+    .toggle.on .toggle-knob { left: 20px; }
+    .settings-msg { font-size: 12px; }
+    .settings-msg.ok { color: #05ee93; }
+    .settings-msg.err { color: #ff5555; }
+    .leave-collab-btn { align-self: flex-start; }
+
+    /* links settings block */
+    .links-settings-block { background: #161719; border: 1px solid #2a2a2e; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+    .links-settings-title { font-size: 13px; color: #ccc; }
+    .links-settings-desc { font-size: 11px; color: #555; margin-top: -6px; }
+    .link-edit-row { display: flex; gap: 8px; }
+    .link-edit-row .edit-input { flex: 1; }
+    .link-edit-row .edit-input.label-input { flex: 0 0 100px; }
+    
+    /* pfp modal */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 500; align-items: center; justify-content: center; }
+    .overlay.open { display: flex; }
+    .pfp-modal { background: #1a1c1f; border: 1px solid #343438; padding: 28px 32px; min-width: 320px; max-width: 440px; width: calc(100vw - 32px); }
+    .pfp-modal h3 { color: #fff; font-size: 14px; margin-bottom: 4px; }
+    .pfp-modal-sub { font-size: 11px; color: #444; margin-bottom: 20px; }
+    .pfp-drop-zone { border: 2px dashed #343438; padding: 36px 20px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .pfp-drop-zone:hover, .pfp-drop-zone.drag-over { border-color: #00b2ff; background: #1e2024; }
+    .pfp-drop-zone input { display: none; }
+    .pfp-drop-icon { font-size: 28px; color: #343438; margin-bottom: 8px; }
+    .pfp-drop-text { font-size: 13px; color: #555; }
+    .pfp-drop-text span { color: #00b2ff; }
+    .pfp-preview-wrap { display: none; flex-direction: column; align-items: center; gap: 10px; }
+    .pfp-preview-wrap.visible { display: flex; }
+    .pfp-preview { width: 96px; height: 96px; object-fit: cover; border: 2px solid #343438; }
+    .pfp-preview-name { font-size: 11px; color: #444; }
+    .pfp-soon { font-size: 11px; color: #444; margin-top: 10px; text-align: center; display: none; }
+    .pfp-modal-actions { display: flex; gap: 8px; margin-top: 20px; justify-content: flex-end; }
+    .cancel-btn { background: #222326; border: 1px solid #343438; color: #aaa; font-family: 'mcfont', sans-serif; font-size: 12px; padding: 5px 14px; cursor: pointer; }
+    .cancel-btn:hover { color: #fff; }
+    .soon-btn { background: #1a1c1f; border: 1px solid #343438; color: #444; font-family: 'mcfont', sans-serif; font-size: 12px; padding: 5px 14px; cursor: not-allowed; }
+
+    .follow-counts { display: flex; gap: 16px; font-size: 12px; color: #888; }
+    .follow-counts b { color: #ccc; }
+    .follow-modal-options { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+    .follow-option { display: flex; align-items: flex-start; gap: 10px; padding: 10px; border: 1px solid #343438; cursor: pointer; transition: border-color 0.2s; }
+    .follow-option:hover { border-color: #00b2ff; }
+    .follow-option.selected { border-color: #05ee93; }
+    .follow-option input { margin-top: 3px; }
+    .follow-option-title { font-size: 13px; color: #fff; }
+    .follow-option-desc { font-size: 11px; color: #666; margin-top: 2px; }
+    
+    .center-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 13px; color: #444; }
+    .center-msg.err { color: #ff5555; }
+
+    /* ---- MOBILE ---- */
+    @media (max-width: 800px) {
+      .search-wrap.in-nav { width: 130px; }
+      .search-wrap.in-nav .search-input { font-size: 11px; padding: 5px 8px; }
+      
+      .profile-banner { flex-direction: column; padding: 32px 20px; gap: 24px; align-items: center; text-align: center; }
+      .profile-side-stats { width: 100%; border-left: none; border-top: 1px solid #2a2a2e; padding-left: 0; padding-top: 20px; align-items: center; }
+      .bio-row { justify-content: center; }
+      .profile-links { justify-content: center; }
+      
+      .projects-panel { padding: 32px 20px; }
+      .project-grid { grid-template-columns: 1fr; }
+
+      .pfp-modal { padding: 20px 16px; }
+      .link-edit-row { flex-wrap: wrap; }
+      .link-edit-row .edit-input.label-input { flex: 1 1 100%; }
+    }
+  </style>
+  <link rel="stylesheet" href="https://mcbcode.com/theme/ranks.css">
+</head>
+<body>
+
+  <div class="overlay" id="pfp-overlay">
+    <div class="pfp-modal">
+      <h3>Profile Picture</h3>
+      <br><br>
+      <div class="pfp-drop-zone" id="pfp-drop-zone" onclick="document.getElementById('pfp-file-input').click()">
+        <input type="file" id="pfp-file-input" accept="image/*">
+        <div class="pfp-drop-icon">+</div>
+        <div class="pfp-drop-text">click or <span>drag a file</span> here</div>
+      </div>
+      <div class="pfp-preview-wrap" id="pfp-preview-wrap">
+        <img class="pfp-preview" id="pfp-preview" src="" alt="">
+        <span class="pfp-preview-name" id="pfp-preview-name"></span>
+      </div>
+      <div class="pfp-soon" id="pfp-soon">looking good!</div>
+      <div class="pfp-modal-actions">
+        <button class="cancel-btn" onclick="closePfpModal()">Close</button>
+        <button class="sm-btn primary" id="pfp-save-btn" onclick="uploadPfp()" style="display:none;">Save</button>
+      </div>
+    </div>
+  </div>
+
+    <div class="overlay" id="follow-overlay">
+    <div class="pfp-modal">
+      <h3 id="follow-modal-title">Follow</h3>
+      <div class="pfp-modal-sub">choose when you want notifications from this person</div>
+
+      <div class="follow-modal-options" id="follow-options"></div>
+
+      <div class="pfp-modal-actions">
+        <button class="cancel-btn" id="unfollow-btn" onclick="doUnfollow()" style="display:none;">Unfollow</button>
+        <button class="cancel-btn" onclick="closeFollowModal()">Close</button>
+        <button class="sm-btn primary" onclick="doFollow()">Save</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="topnav">
+    <p class="topnav-logo">mcb<g>Code</g></p>
+    <div id="nav-search-slot"></div>
+    <div class="topnav-right">
+      <a href="https://app.mcbcode.com/dashboard" class="nav-btn">Dashboard</a>
+    </div>
+  </div>
+
+  <div class="landing" id="landing">
+    <div class="search-stabilizer">
+      <div class="search-wrap centered" id="search-wrap">
+        <div class="search-logo">mcb<g>Code</g><small>search for a user</small></div>
+        <div class="search-input-row">
+          <input class="search-input" id="search-input" type="text" placeholder="username..." autocomplete="off" maxlength="32">
+          <div class="autocomplete-list" id="ac-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="recent-section" id="recent-section">
+      <div class="recent-label">All Profiles</div>
+      <div class="recent-grid" id="recent-grid">
+        <div class="recent-loading">loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="profile-page">
+    
+    <div class="profile-banner">
+      <div class="profile-avatar-wrap" id="avatar-wrap">
+        <div class="profile-avatar" id="prof-avatar">?</div>
+        <div class="avatar-hint">change photo</div>
+      </div>
+
+      <div class="profile-main-info">
+        <div class="username-row">
+          <button class="icon-edit-btn" id="edit-username-btn" onclick="toggleUsernameEdit()" title="edit username">
+            <img src="https://mcbcode.com/img/icons/pencil.png" alt="">
+          </button>
+          <div class="profile-username" id="prof-username"></div>
+          <div class="profile-rank" id="prof-rank"></div>
+        </div>
+        
+        <div class="edit-area" id="username-edit-area">
+          <input class="edit-input" type="text" id="username-input" maxlength="32" placeholder="new username">
+          <div class="edit-save-row">
+            <button class="sm-btn primary" onclick="saveUsername()">Save</button>
+            <button class="sm-btn" onclick="toggleUsernameEdit()">Cancel</button>
+            <span class="inline-msg" id="username-msg"></span>
+          </div>
+        </div>
+
+        <div class="bio-row">
+          <button class="icon-edit-btn" id="edit-bio-btn" onclick="toggleBioEdit()" title="edit bio">
+            <img src="https://mcbcode.com/img/icons/pencil.png" alt="">
+          </button>
+          <div class="bio-row-text">
+            <div class="profile-bio" id="prof-bio"></div>
+            <div class="profile-bio-empty" id="prof-bio-empty" style="display:none;">no bio yet.</div>
+          </div>
+        </div>
+        
+        <div class="edit-area" id="bio-edit-area">
+          <textarea class="edit-textarea" id="bio-textarea" maxlength="256" placeholder="tell people about yourself..."></textarea>
+          <div class="edit-save-row">
+            <button class="sm-btn primary" onclick="saveBio()">Save</button>
+            <button class="sm-btn" onclick="toggleBioEdit()">Cancel</button>
+            <span class="inline-msg" id="bio-msg"></span>
+          </div>
+        </div>
+
+        <div class="profile-links" id="prof-links"></div>
+      </div>
+
+      <div class="profile-side-stats">
+        <div class="profile-points" id="prof-points" style="display:none;"></div>
+        <div class="profile-email" id="prof-email" style="display:none;"></div>
+        <div class="profile-joined" id="prof-joined"></div>
+        <div class="follow-counts" id="prof-follow-counts"></div>
+        <button class="edit-btn" id="follow-btn" onclick="openFollowModal()" style="display:none;"></button>
+        <div class="edit-row" id="settings-btn-row" style="display:none;">
+          <button class="edit-btn" id="watching-btn" onclick="toggleWatchingView()">watching</button>
+          <button class="edit-btn" id="settings-btn" onclick="toggleSettingsView()">settings</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="projects-panel">
+      <h2>Owned by me</h2>
+      <div class="project-grid" id="project-grid"></div>
+
+      <h2 style="margin-top:48px;">Collaborating with</h2>
+      <div class="project-grid" id="collab-grid"></div>
+      <div class="settings-panel" id="watching-panel">
+        <h2>Projects You're Watching</h2>
+        <div class="project-grid" id="watching-grid"></div>
+      </div>
+      <div class="settings-panel" id="settings-panel">
+        <h2>Settings</h2>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Show points on profile</div>
+          </div>
+          <div class="toggle" id="toggle-show_points" onclick="toggleSetting('show_points')"><div class="toggle-knob"></div></div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Allow collaborating</div>
+            <div class="setting-desc">let other users add you as a collaborator on their projects</div>
+          </div>
+          <div class="toggle" id="toggle-allow_collab" onclick="toggleSetting('allow_collab')"><div class="toggle-knob"></div></div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Show email on profile</div>
+          </div>
+          <div class="toggle" id="toggle-show_email" onclick="toggleSetting('show_email')"><div class="toggle-knob"></div></div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Use Mojangles Font</div>
+          </div>
+          <div class="toggle" id="toggle-use_mojangles_font" onclick="toggleSetting('use_mojangles_font')"><div class="toggle-knob"></div></div>
+        </div>
+       <div class="setting-row">
+        <div>
+          <div class="setting-label">Use inline code editor</div>
+            <div class="setting-desc">edit files right in the project page instead of a separate editor page</div>
+          </div>
+            <div class="toggle" id="toggle-editor_mode" onclick="toggleEditorMode()"><div class="toggle-knob"></div></div>
+          </div>
+        
+        <div class="links-settings-block">
+          <div class="links-settings-title">Profile links</div>
+          <div class="links-settings-desc">up to 3 links, shown under your bio</div>
+          <div id="link-edit-rows"></div>
+          <div class="edit-save-row">
+            <button class="sm-btn primary" onclick="saveLinks()">Save Links</button>
+            <span class="inline-msg" id="links-msg"></span>
+          </div>
+        </div>
+
+        <span class="settings-msg" id="settings-msg"></span>
+
+        <button class="sm-btn leave-collab-btn" onclick="leaveAllCollaborations()">Remove me from all projects I'm collaborating on</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="center-msg" id="center-msg" style="display:none;"></div>
+
+
+  <script>
+    const AUTH = "https://auth.mcbcode.com";
+    const params = new URLSearchParams(location.search);
+
+    // figure out which username this page should show. priority:
+    // 1. ?u=username (old style link)
+    // 2. /profile/username in the address bar (pretty url, already resolved)
+    // 3. a spa-redirect stashed by 404.html (pretty url that 404'd first)
+    let targetUser = params.get("u") || "";
+    let pendingHash = "";
+
+    if (!targetUser) {
+      const pathMatch = location.pathname.match(/^\/profile\/([^\/]+)\/?$/);
+      if (pathMatch) targetUser = decodeURIComponent(pathMatch[1]);
+    }
+
+    if (!targetUser) {
+      const spaRedirect = sessionStorage.getItem("spa-redirect");
+      if (spaRedirect) {
+        sessionStorage.removeItem("spa-redirect");
+        const m = spaRedirect.match(/^\/profile\/([^\/#]+)/);
+        if (m) {
+          targetUser = decodeURIComponent(m[1]);
+          const hashIdx = spaRedirect.indexOf("#");
+          pendingHash = hashIdx >= 0 ? spaRedirect.slice(hashIdx) : "";
+          history.replaceState({}, "", `/profile/${encodeURIComponent(targetUser)}${pendingHash}`);
+        }
+      }
+    }
+
+    if (!pendingHash) pendingHash = location.hash || "";
+
+    let myUsername = null;
+    let acDebounce = null;
+    let acSelected = -1;
+    let acResults  = [];
+    let searchInLanding = true; // track if search is still in landing vs topnav
+    let selectedPfpFile = null;
+
+    function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+    function fmtDate(s) {
+      if (!s) return "";
+      const d = new Date(s.endsWith("Z") ? s : s + "Z");
+      return d.toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" });
+    }
+
+    // rank → username css class
+    function rankClass(rank) {
+      if (!rank) return "";
+      return "username-" + rank.toLowerCase().replace(/[^a-z]/g, "");
+    }
+
+    // rank badge bg from color
+    function rankBg(color) {
+      if (!color) return "rgba(136,136,136,.2)";
+      return color.startsWith("#") && color.length === 7 ? color + "40" : "rgba(136,136,136,.2)";
+    }
+
+    // ---- INIT ----
+    (async () => {
+      try {
+        const r = await fetch(`${AUTH}/me`, { credentials: "include" });
+        if (r.ok) { const d = await r.json(); myUsername = d.username; }
+      } catch {}
+
+      if (targetUser) {
+        // profile url — hide landing, load profile
+        document.getElementById("landing").classList.add("hidden");
+        await loadProfile(targetUser);
+
+        // if we came in via #settings and this is our own profile, open settings
+        if (pendingHash === "#settings" && myUsername && myUsername === targetUser) {
+          toggleSettingsView(true);
+        }
+      } else {
+        // landing — load all profiles
+        loadRecentUsers();
+        initScrollSticky();
+      }
+    })();
+
+    // ---- ALL PROFILES ----
+    async function loadRecentUsers() {
+      const grid = document.getElementById("recent-grid");
+      try {
+        const r = await fetch(`${AUTH}/users/recent?limit=200`);
+        if (!r.ok) { grid.innerHTML = `<div class="recent-empty">couldn't load profiles.</div>`; return; }
+        const d = await r.json();
+        if (!d.users.length) { grid.innerHTML = `<div class="recent-empty">no profiles yet.</div>`; return; }
+        grid.innerHTML = d.users.map(u => {
+          const cls = rankClass(u.rank);
+          const badgeStyle = u.rank ? `style="background:${rankBg(u.rankColor)};color:${u.rankColor || '#888'}"` : "";
+          const pfp = u.pfp_url || u.pfpUrl;
+          const avatarInner = pfp
+            ? `<img src="${esc(pfp)}" alt="">`
+            : u.username[0].toUpperCase();
+          return `
+            <div class="recent-card" onclick="goToProfile('${esc(u.username)}')">
+              <div class="recent-avatar" style="${!pfp && cls ? `color:${u.rankColor}` : ''}">${avatarInner}</div>
+              <div class="recent-name ${cls}">${esc(u.username)}</div>
+              ${u.rank ? `<div class="recent-rank-badge" ${badgeStyle}>${esc(u.rank.toLowerCase())}</div>` : ""}
+            </div>
+          `;
+        }).join("");
+      } catch { grid.innerHTML = `<div class="recent-empty">couldn't load profiles.</div>`; }
+    }
+
+    // ---- STICKY SEARCH ON SCROLL (landing only) ----
+    function initScrollSticky() {
+      const wrap = document.getElementById("search-wrap");
+      let restingTop = null;
+
+      const measure = () => {
+        // only measure while it's still in normal flow (not already pinned)
+        if (wrap.classList.contains("centered")) {
+          restingTop = wrap.getBoundingClientRect().top + window.scrollY;
+        }
+      };
+      measure();
+      window.addEventListener("resize", measure, { passive: true });
+
+      window.addEventListener("scroll", () => {
+        if (!searchInLanding || restingTop === null) return;
+        if (window.scrollY > restingTop - 58) {
+          wrap.classList.remove("centered");
+          wrap.classList.add("sticky-top");
+        } else {
+          wrap.classList.remove("sticky-top");
+          wrap.classList.add("centered");
+          measure();
+        }
+      }, { passive: true });
+    }
+
+    // ---- SEARCH ----
+    const searchInput = document.getElementById("search-input");
+    const acList      = document.getElementById("ac-list");
+    if (targetUser) searchInput.value = targetUser;
+
+    searchInput.addEventListener("input", () => {
+      clearTimeout(acDebounce);
+      const q = searchInput.value.trim();
+      if (!q) { closeAc(); return; }
+      acDebounce = setTimeout(() => fetchAc(q), 180);
+    });
+
+    searchInput.addEventListener("keydown", e => {
+      if (e.key === "ArrowDown") { acSelected = Math.min(acSelected + 1, acResults.length - 1); renderAc(); e.preventDefault(); }
+      else if (e.key === "ArrowUp") { acSelected = Math.max(acSelected - 1, 0); renderAc(); e.preventDefault(); }
+      else if (e.key === "Enter") { const val = acSelected >= 0 ? acResults[acSelected] : searchInput.value.trim(); if (val) goToProfile(val); }
+      else if (e.key === "Escape") closeAc();
+    });
+
+    async function fetchAc(q) {
+      try {
+        const r = await fetch(`${AUTH}/profile/search?q=${encodeURIComponent(q)}`);
+        if (!r.ok) return;
+        const d = await r.json();
+        acResults = d.results || []; acSelected = -1; renderAc();
+      } catch {}
+    }
+
+    function renderAc() {
+      if (!acResults.length) { closeAc(); return; }
+      acList.innerHTML = acResults.map((u, i) => `<div class="ac-item${i === acSelected ? ' selected' : ''}" onclick="goToProfile('${esc(u)}')">${esc(u)}</div>`).join("");
+      acList.classList.add("open");
+    }
+
+    function closeAc() { acList.classList.remove("open"); acList.innerHTML = ""; acResults = []; acSelected = -1; }
+    function goToProfile(u) { window.location.href = `/profile/${encodeURIComponent(u)}`; }
+
+    // ---- LOAD PROFILE ----
+    async function loadProfile(username) {
+      const msg = document.getElementById("center-msg");
+      msg.textContent = "Loading..."; msg.style.display = ""; msg.className = "center-msg";
+      try {
+        const r = await fetch(`${AUTH}/profile?u=${encodeURIComponent(username)}`);
+        if (!r.ok) { const d = await r.json(); msg.textContent = d.error || "User not found."; msg.className = "center-msg err"; return; }
+        const d = await r.json();
+        msg.style.display = "none";
+        renderProfile(d);
+      } catch { msg.textContent = "Failed to load profile."; msg.className = "center-msg err"; }
+    }
+
+function renderProfile(data) {
+  const {
+    user,
+    projects,
+    collaborating = []
+  } = data;
+
+  // move search to topnav
+  searchInLanding = false;
+  const wrap = document.getElementById("search-wrap");
+  wrap.classList.remove("centered", "sticky-top");
+  wrap.classList.add("in-nav");
+  document.getElementById("nav-search-slot").appendChild(wrap);
+
+  // avatar
+  const avatarEl = document.getElementById("prof-avatar");
+
+  if (user.pfp_url) {
+    avatarEl.innerHTML = `
+      <img
+        src="${user.pfp_url}?t=${Date.now()}"
+        alt="Profile Picture"
+      >
+    `;
+  } else {
+    avatarEl.textContent = user.username[0].toUpperCase();
+  }
+
+  // username with rank styling
+  const unEl = document.getElementById("prof-username");
+  unEl.textContent = user.username;
+  if (user.rank) unEl.classList.add(rankClass(user.rank));
+
+  document.getElementById("prof-joined").textContent = "joined " + fmtDate(user.joined);
+  document.title = `mcbCode | ${user.username}`;
+
+  // points
+  const pointsEl = document.getElementById("prof-points");
+  if (user.points !== null && user.points !== undefined) {
+    pointsEl.textContent = `${user.points} points`;
+    pointsEl.style.display = "";
+  } else {
+    pointsEl.style.display = "none";
+  }
+
+  // email
+  const emailEl = document.getElementById("prof-email");
+  if (user.email) {
+    emailEl.textContent = user.email;
+    emailEl.style.display = "";
+  } else {
+    emailEl.style.display = "none";
+  }
+  
+  // rank badge
+  const rankEl = document.getElementById("prof-rank");
+  if (user.rank) {
+    rankEl.textContent = user.rank.toLowerCase();
+    rankEl.style.color = user.rankColor || "#888";
+    rankEl.style.backgroundColor = rankBg(user.rankColor);
+    rankEl.style.display = "block";
+  } else {
+    rankEl.style.display = "none";
+  }
+
+  // bio
+  if (user.bio) {
+    document.getElementById("prof-bio").textContent = user.bio;
+    document.getElementById("prof-bio").style.display = "";
+    document.getElementById("prof-bio-empty").style.display = "none";
+  } else {
+    document.getElementById("prof-bio").style.display = "none";
+    document.getElementById("prof-bio-empty").style.display = "";
+  }
+
+  // links (below bio)
+  renderProfileLinks(user.links || []);
+
+  const isMe = myUsername && myUsername === user.username;
+
+  if (isMe) {
+    // avatar clickable only for owner
+    const avatarWrap = document.getElementById("avatar-wrap");
+    avatarWrap.classList.add("clickable");
+    avatarWrap.onclick = openPfpModal;
+
+    // username edit
+    document.getElementById("edit-username-btn").style.display = "flex";
+    document.getElementById("username-input").value = user.username;
+
+    // bio edit
+    document.getElementById("edit-bio-btn").style.display = "flex";
+    document.getElementById("bio-textarea").value = user.bio || "";
+
+    // settings edit
+    document.getElementById("settings-btn-row").style.display = "";
+    loadSettings();
+    
+  } else if (myUsername) {
+    // logged in, viewing someone else — show follow button + counts
+    document.getElementById("follow-btn").style.display = "";
+    loadFollowStatus(user.username);
+  }
+
+  document.getElementById("prof-follow-counts").innerHTML =
+    `<span><b>${user.follower_count}</b> Followers</span> <span><b>${user.following_count}</b> Following</span>`;
+
+  
+  // owned projects
+  const grid = document.getElementById("project-grid");
+
+  if (!projects.length) {
+    grid.innerHTML = `<div class="no-projects">no public projects yet.</div>`;
+  } else {
+    grid.innerHTML = projects.map(p => `
+      <div class="project-card" onclick="window.location.href='/project/${esc(p.share_code)}/'">
+        <div class="project-card-name">${esc(p.name)}</div>
+        ${p.description ? `<div class="project-card-desc">${esc(p.description)}</div>` : ""}
+        <div class="project-card-date">updated ${fmtDate(p.updated_at)}</div>
+      </div>
+    `).join("");
+  }
+
+  // collaborated projects
+  const collabGrid = document.getElementById("collab-grid");
+
+  if (!collaborating.length) {
+    collabGrid.innerHTML = `<div class="no-projects">not collaborating on any public projects.</div>`;
+  } else {
+    collabGrid.innerHTML = collaborating.map(p => `
+      <div class="project-card" onclick="window.location.href='/project/${esc(p.share_code)}/'">
+        <div class="project-card-name">${esc(p.name)}</div>
+        ${p.description ? `<div class="project-card-desc">${esc(p.description)}</div>` : ""}
+        <div class="project-card-date">
+          owner: ${esc(p.owner)} • updated ${fmtDate(p.updated_at)}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("profile-page").classList.add("visible");
+}
+
+    // ---- PROFILE LINKS (display, below bio) ----
+    function renderProfileLinks(links) {
+      const wrap = document.getElementById("prof-links");
+      if (!links || !links.length) { wrap.innerHTML = ""; return; }
+      wrap.innerHTML = links.map(l => `
+        <a class="profile-link" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">
+          <img src="https://mcbcode.com/img/icons/link.png" alt="">
+          <span>${esc(l.label || l.url)}</span>
+        </a>
+      `).join("");
+    }
+
+    // ---- USERNAME EDIT ----
+    function toggleUsernameEdit() {
+      const area = document.getElementById("username-edit-area");
+      const isOpen = area.classList.toggle("open");
+      document.getElementById("edit-username-btn").classList.toggle("active", isOpen);
+      if (isOpen) setTimeout(() => document.getElementById("username-input").focus(), 50);
+    }
+
+    async function saveUsername() {
+      const val = document.getElementById("username-input").value.trim().replace(/[^a-zA-Z0-9_\-]/g, "");
+      const msg = document.getElementById("username-msg");
+      if (!val || val.length < 2) { msg.textContent = "too short."; msg.className = "inline-msg err"; return; }
+      try {
+        const res = await fetch(`${AUTH}/profile`, {
+          method: "POST", credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: val })
+        });
+        const d = await res.json();
+        if (res.ok) {
+          msg.textContent = "saved!"; msg.className = "inline-msg ok";
+          const unEl = document.getElementById("prof-username");
+          unEl.textContent = val;
+          myUsername = val;
+          setTimeout(() => { toggleUsernameEdit(); window.history.replaceState({}, "", `/profile/${encodeURIComponent(val)}`); }, 800);
+        } else { msg.textContent = d.error || "failed."; msg.className = "inline-msg err"; }
+      } catch { msg.textContent = "error."; msg.className = "inline-msg err"; }
+      setTimeout(() => { msg.textContent = ""; msg.className = "inline-msg"; }, 3000);
+    }
+
+    // ---- BIO EDIT ----
+    function toggleBioEdit() {
+      const area = document.getElementById("bio-edit-area");
+      const isOpen = area.classList.toggle("open");
+      document.getElementById("edit-bio-btn").classList.toggle("active", isOpen);
+    }
+
+    async function saveBio() {
+      const bio = document.getElementById("bio-textarea").value.trim();
+      const msg = document.getElementById("bio-msg");
+      try {
+        const res = await fetch(`${AUTH}/profile/bio`, {
+          method: "POST", credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ bio })
+        });
+        if (res.ok) {
+          const bioEl = document.getElementById("prof-bio");
+          bioEl.textContent = bio; bioEl.style.display = bio ? "" : "none";
+          document.getElementById("prof-bio-empty").style.display = bio ? "none" : "";
+          msg.textContent = "saved!"; msg.className = "inline-msg ok";
+          setTimeout(() => toggleBioEdit(), 800);
+        } else { msg.textContent = "failed."; msg.className = "inline-msg err"; }
+      } catch { msg.textContent = "error."; msg.className = "inline-msg err"; }
+      setTimeout(() => { msg.textContent = ""; msg.className = "inline-msg"; }, 3000);
+    }
+
+    let currentSettings = null;
+    let settingsLoaded = false;
+
+    async function loadSettings() {
+      try {
+        const r = await fetch(`${AUTH}/settings`, { credentials: "include" });
+        if (!r.ok) return;
+        const d = await r.json();
+        currentSettings = d.settings;
+        settingsLoaded = true;
+        renderSettingsToggles();
+        renderLinkEditRows();
+      } catch {}
+    }
+
+function renderSettingsToggles() {
+  if (!currentSettings) return;
+  const map = {
+    show_points: currentSettings.show_points,
+    allow_collab: currentSettings.allow_collab,
+    show_email: currentSettings.show_email,
+    use_mojangles_font: currentSettings.use_mojangles_font,
+  };
+  for (const key in map) {
+    const el = document.getElementById(`toggle-${key}`);
+    if (el) el.classList.toggle("on", !!map[key]);
+  }
+  const editorEl = document.getElementById("toggle-editor_mode");
+  if (editorEl) editorEl.classList.toggle("on", currentSettings.editor_mode === "inline");
+}
+    
+    // ---- LINKS SETTINGS (up to 3 label+url rows) ----
+    function renderLinkEditRows() {
+      const container = document.getElementById("link-edit-rows");
+      const links = (currentSettings && currentSettings.links) || [];
+      const rows = [0, 1, 2].map(i => {
+        const l = links[i] || { label: "", url: "" };
+        return `
+          <div class="link-edit-row" style="margin-bottom:6px;">
+            <input class="edit-input label-input" type="text" maxlength="24" placeholder="label" value="${esc(l.label || "")}" id="link-label-${i}">
+            <input class="edit-input" type="text" maxlength="200" placeholder="https://..." value="${esc(l.url || "")}" id="link-url-${i}">
+          </div>
+        `;
+      }).join("");
+      container.innerHTML = rows;
+    }
+
+    async function saveLinks() {
+      const msg = document.getElementById("links-msg");
+      const links = [];
+      for (let i = 0; i < 3; i++) {
+        const url = document.getElementById(`link-url-${i}`).value.trim();
+        const label = document.getElementById(`link-label-${i}`).value.trim();
+        if (url) links.push({ label, url });
+      }
+      try {
+        const res = await fetch(`${AUTH}/settings`, {
+          method: "POST", credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ links })
+        });
+        if (res.ok) {
+          msg.textContent = "saved!"; msg.className = "inline-msg ok";
+          if (currentSettings) currentSettings.links = links;
+          renderProfileLinks(links);
+        } else { msg.textContent = "failed to save."; msg.className = "inline-msg err"; }
+      } catch { msg.textContent = "error."; msg.className = "inline-msg err"; }
+      setTimeout(() => { msg.textContent = ""; msg.className = "inline-msg"; }, 3000);
+    }
+
+    function toggleSettingsView(forceOpen) {
+      const panel = document.getElementById("settings-panel");
+      const showing = forceOpen === true ? true : !panel.classList.contains("visible");
+      panel.classList.toggle("visible", showing);
+      document.querySelectorAll(".projects-panel > h2, .projects-panel > .project-grid").forEach(el => {
+        el.style.display = showing ? "none" : "";
+      });
+      document.getElementById("settings-btn").textContent = showing ? "back" : "settings";
+      if (showing && !settingsLoaded) loadSettings();
+
+      // keep the url in sync so #settings can be shared/bookmarked/deep-linked
+      const base = `/profile/${encodeURIComponent(myUsername || "")}`;
+      history.replaceState({}, "", showing ? `${base}#settings` : base);
+    }
+
+    let watchingLoaded = false;
+
+    function toggleWatchingView(forceOpen) {
+      const panel = document.getElementById("watching-panel");
+      const showing = forceOpen === true ? true : !panel.classList.contains("visible");
+      panel.classList.toggle("visible", showing);
+      document.querySelectorAll(".projects-panel > h2, .projects-panel > .project-grid").forEach(el => {
+        el.style.display = showing ? "none" : "";
+      });
+      document.getElementById("watching-btn").textContent = showing ? "back" : "watching";
+      if (showing && !watchingLoaded) loadWatching();
+    }
+
+    async function loadWatching() {
+      const grid = document.getElementById("watching-grid");
+      try {
+        const r = await fetch(`${AUTH}/me/watching`, { credentials: "include" });
+        if (!r.ok) { grid.innerHTML = `<div class="no-projects">failed to load.</div>`; return; }
+        const d = await r.json();
+        watchingLoaded = true;
+        if (!d.watching.length) { grid.innerHTML = `<div class="no-projects">you're not watching any projects yet.</div>`; return; }
+        grid.innerHTML = d.watching.map(p => `
+          <div class="project-card" onclick="window.location.href='/project/${esc(p.share_code)}/'">
+            <div class="project-card-name">${esc(p.name)}</div>
+            ${p.description ? `<div class="project-card-desc">${esc(p.description)}</div>` : ""}
+            <div class="project-card-date">owner: ${esc(p.owner_username)} • updated ${fmtDate(p.updated_at)}</div>
+          </div>
+        `).join("");
+      } catch { grid.innerHTML = `<div class="no-projects">failed to load.</div>`; }
+    }
+    
+    async function toggleSetting(key) {
+      if (!currentSettings) return;
+      currentSettings[key] = !currentSettings[key];
+      renderSettingsToggles();
+      const msg = document.getElementById("settings-msg");
+      try {
+        const res = await fetch(`${AUTH}/settings`, {
+          method: "POST", credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ [key]: currentSettings[key] })
+        });
+        if (res.ok) { msg.textContent = "saved!"; msg.className = "settings-msg ok"; }
+        else { msg.textContent = "failed to save."; msg.className = "settings-msg err"; }
+      } catch { msg.textContent = "error saving."; msg.className = "settings-msg err"; }
+      setTimeout(() => { msg.textContent = ""; msg.className = "settings-msg"; }, 2500);
+    }
+
+    async function toggleEditorMode() {
+  if (!currentSettings) return;
+  const newMode = currentSettings.editor_mode === "inline" ? "legacy" : "inline";
+  currentSettings.editor_mode = newMode;
+  renderSettingsToggles();
+  const msg = document.getElementById("settings-msg");
+  try {
+    const res = await fetch(`${AUTH}/settings`, {
+      method: "POST", credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ editor_mode: newMode })
+    });
+    if (res.ok) { msg.textContent = "saved!"; msg.className = "settings-msg ok"; }
+    else { msg.textContent = "failed to save."; msg.className = "settings-msg err"; }
+  } catch { msg.textContent = "error saving."; msg.className = "settings-msg err"; }
+  setTimeout(() => { msg.textContent = ""; msg.className = "settings-msg"; }, 2500);
+}
+    
+    async function leaveAllCollaborations() {
+      if (!confirm("Remove yourself from every project you're currently collaborating on?")) return;
+      const msg = document.getElementById("settings-msg");
+      try {
+        const res = await fetch(`${AUTH}/me/collaborations`, { method: "DELETE", credentials: "include" });
+        if (res.ok) { msg.textContent = "you've been removed from all collaborations."; msg.className = "settings-msg ok"; }
+        else { msg.textContent = "failed."; msg.className = "settings-msg err"; }
+      } catch { msg.textContent = "error."; msg.className = "settings-msg err"; }
+    }
+    
+    // ---- PFP MODAL ----
+    function openPfpModal() {
+      document.getElementById("pfp-overlay").classList.add("open");
+    }
+    function closePfpModal() {
+      document.getElementById("pfp-overlay").classList.remove("open");
+      document.getElementById("pfp-drop-zone").style.display = "";
+      document.getElementById("pfp-preview-wrap").classList.remove("visible");
+      document.getElementById("pfp-soon").style.display = "none";
+      document.getElementById("pfp-file-input").value = "";
+    }
+
+    const dropZone = document.getElementById("pfp-drop-zone");
+    const fileInput = document.getElementById("pfp-file-input");
+    fileInput.addEventListener("change", e => { if (e.target.files[0]) handlePfpFile(e.target.files[0]); });
+    dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("drag-over"); });
+    dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+    dropZone.addEventListener("drop", e => {
+      e.preventDefault(); dropZone.classList.remove("drag-over");
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith("image/")) handlePfpFile(file);
+    });
+function handlePfpFile(file) {
+  selectedPfpFile = file;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    dropZone.style.display = "none";
+
+    document.getElementById("pfp-preview-wrap").classList.add("visible");
+    document.getElementById("pfp-preview").src = e.target.result;
+    document.getElementById("pfp-preview-name").textContent = file.name;
+
+    document.getElementById("pfp-save-btn").style.display = "";
+  };
+
+  reader.readAsDataURL(file);
+}
+
+async function uploadPfp() {
+  if (!selectedPfpFile) return;
+
+  const btn = document.getElementById("pfp-save-btn");
+
+  try {
+    btn.disabled = true;
+    btn.textContent = "Uploading...";
+
+    const res = await fetch(`${AUTH}/pfp`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": selectedPfpFile.type
+      },
+      body: selectedPfpFile
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Upload failed");
+    }
+
+    const avatar = document.getElementById("prof-avatar");
+
+    avatar.innerHTML = `
+      <img
+        src="${data.pfp_url}?t=${Date.now()}"
+        alt="Profile Picture"
+      >
+    `;
+
+    closePfpModal();
+
+  } catch (err) {
+    alert(err.message || "Failed to upload image");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Save";
+  }
+}
+
+    document.getElementById("pfp-overlay").addEventListener("click", e => { if (e.target === e.currentTarget) closePfpModal(); });
+    document.addEventListener("click", e => { if (!e.target.closest(".search-input-row")) closeAc(); });
+
+      // ---- FOLLOWING ----
+    let followTargetUsername = null;
+    let followSelectedLevel = "nothing";
+    let currentlyFollowing = false;
+
+    const FOLLOW_OPTIONS = [
+      { level: "nothing", title: "Nothing", desc: "don't notify me about this person" },
+      { level: "projects", title: "Project updates", desc: "notify me when their projects change" },
+      { level: "all", title: "All", desc: "notify me about username, bio, pfp, and project updates" },
+    ];
+
+    async function loadFollowStatus(username) {
+      followTargetUsername = username;
+      try {
+        const r = await fetch(`${AUTH}/follow/status?u=${encodeURIComponent(username)}`, { credentials: "include" });
+        if (!r.ok) return;
+        const d = await r.json();
+        currentlyFollowing = d.is_following;
+        followSelectedLevel = d.notify_level || "nothing";
+        updateFollowBtnLabel();
+      } catch {}
+    }
+
+    function updateFollowBtnLabel() {
+      const btn = document.getElementById("follow-btn");
+      btn.textContent = currentlyFollowing ? "following" : "follow";
+    }
+
+    function renderFollowOptions() {
+      const wrap = document.getElementById("follow-options");
+      wrap.innerHTML = FOLLOW_OPTIONS.map(o => `
+        <label class="follow-option${o.level === followSelectedLevel ? " selected" : ""}" onclick="selectFollowLevel('${o.level}')">
+          <input type="radio" name="follow-level" value="${o.level}" ${o.level === followSelectedLevel ? "checked" : ""}>
+          <div>
+            <div class="follow-option-title">${o.title}</div>
+            <div class="follow-option-desc">${o.desc}</div>
+          </div>
+        </label>
+      `).join("");
+    }
+
+    function selectFollowLevel(level) {
+      followSelectedLevel = level;
+      renderFollowOptions();
+    }
+
+    function openFollowModal() {
+      renderFollowOptions();
+      document.getElementById("unfollow-btn").style.display = currentlyFollowing ? "" : "none";
+      document.getElementById("follow-overlay").classList.add("open");
+    }
+
+    function closeFollowModal() {
+      document.getElementById("follow-overlay").classList.remove("open");
+    }
+
+    async function doFollow() {
+      try {
+        const res = await fetch(`${AUTH}/follow`, {
+          method: "POST", credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: followTargetUsername, notify_level: followSelectedLevel })
+        });
+        const d = await res.json();
+        if (res.ok) {
+          currentlyFollowing = true;
+          updateFollowBtnLabel();
+          document.getElementById("prof-follow-counts").innerHTML =
+            `<span><b>${d.follower_count}</b> Followers</span>`;
+          closeFollowModal();
+        } else {
+          alert(d.error || "failed to follow.");
+        }
+      } catch { alert("error following."); }
+    }
+
+    async function doUnfollow() {
+      try {
+        const res = await fetch(`${AUTH}/follow?u=${encodeURIComponent(followTargetUsername)}`, {
+          method: "DELETE", credentials: "include"
+        });
+        const d = await res.json();
+        if (res.ok) {
+          currentlyFollowing = false;
+          updateFollowBtnLabel();
+          document.getElementById("prof-follow-counts").innerHTML =
+            `<span><b>${d.follower_count}</b> Followers</span>`;
+          closeFollowModal();
+        } else {
+          alert(d.error || "failed to unfollow.");
+        }
+      } catch { alert("error unfollowing."); }
+    }
+
+    document.getElementById("follow-overlay").addEventListener("click", e => { if (e.target === e.currentTarget) closeFollowModal(); });
+    
+  </script>
+
+
+  <script data-goatcounter="https://mcbcode.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
