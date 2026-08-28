@@ -870,7 +870,7 @@ c {
     (async () => {
       try {
         const res = await fetch(`${AUTH}/me`, { credentials: "include" });
-        if (!res.ok) return window.location.href = "/account";
+        if (!res.ok) return window.location.href = "https://app.mcbcode.com/";
         const data = await res.json();
         document.getElementById("user-email").textContent = data.email;
         document.getElementById("acct-email").textContent = data.email;
@@ -878,14 +878,14 @@ c {
         if (data.is_github) document.getElementById("acct-github-badge").style.display = "";
         if (data.username) {
           document.getElementById("acct-username").value = data.username;
-          document.getElementById("acct-view-profile").href = `/profile/${encodeURIComponent(data.username)}`;
+          document.getElementById("acct-view-profile").href = `https://app.mcbcode.com/profile/${encodeURIComponent(data.username)}`;
         } else {
           // no username — show the gate, block everything
           document.getElementById("gate-overlay").classList.add("visible");
           setTimeout(() => document.getElementById("gate-username").focus(), 100);
           return; // don't load anything else until they set one
         }
-      } catch { return window.location.href = "/account"; }
+      } catch { return window.location.href = "https://app.mcbcode.com/"; }
 
       await loadProjects();
     })();
