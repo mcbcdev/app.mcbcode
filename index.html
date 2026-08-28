@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mcbcode.com/account">
+  <meta property="og:title" content="mcbCode | Account">
+  <meta property="og:description" content="Sign in or create your mcbCode account">
+  <meta property="og:image" content="https://mcbcode.com/theme/favicon.png">
+  <meta property="og:site_name" content="mcbCode">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="https://mcbcode.com/theme/favicon.png">
+  <link rel="stylesheet" href="https://mcbcode.com/theme/site.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>mcbCode | Account</title>
+  <style>
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  font-family: "mcfont", sans-serif;
+  background: #0c0c0c;
+  color: #bebebe;
+  text-align: center;
+}
+h2 {
+  font-size: 25px;
+  color: #ffffff;
+}
+a {
+  text-decoration: none;
+  color: #ffffff;
+  transition: color 0.2s ease-in-out;
+}
+a:hover {
+  color: #05ee93;
+}
+button {
+  text-align: center;
+  background-color: #313131;
+  border: none;
+  font-size: 18px;
+  padding: 8px 12px;
+  color: #ffffff;
+  transition: color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+g {
+  color: #05ee93;
+}
+c {
+  color: #e7007b;
+}
+.account-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 120px auto 60px;
+  padding: 36px 32px;
+  box-sizing: border-box;
+}
+.account-card h1 {
+  font-family: "mcfontb", sans-serif;
+  font-size: 28px;
+  color: #ffffff;
+  margin: 0 0 8px;
+}
+.account-card p.subtitle {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 28px;
+}
+.tabs {
+  display: flex;
+  background: #111;
+  padding: 4px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  font-size: 15px;
+  padding: 8px;
+  color: #888;
+  transition: background 0.2s, color 0.2s;
+}
+.tab-btn:hover {
+  color: #ffffff;
+}
+.tab-btn.active {
+  background: #2e2e2e;
+  color: #ffffff;
+}
+.form-group {
+  text-align: left;
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 6px;
+}
+.form-group input {
+  width: 100%;
+  background: #111;
+  border: 2px solid #2e2e2e;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-family: "mcfont", sans-serif;
+  color: #ffffff;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.form-group input:focus {
+  border-color: #05ee93;
+}
+.submit-btn {
+  width: 100%;
+  background: #05ee93;
+  color: #0c0c0c;
+  border: 3px solid #00a459;
+  font-size: 16px;
+  padding: 11px;
+  margin-top: 8px;
+  cursor: pointer;
+  font-family: "mcfont", sans-serif;
+  transition: background 0.2s, color 0.2s;
+}
+.submit-btn:hover {
+  background: #00c97a;
+  color: #ffffff;
+}
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.github-btn {
+  width: 100%;
+  background: #000000;
+  color: #ffffff;
+  border-radius: 6px;
+  border: 2px solid #444;
+  font-size: 16px;
+  padding: 11px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-family: "mcfont", sans-serif;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.google-btn {
+  width: 100%;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 16px;
+  border: 3px solid #444;
+  font-size: 16px;
+  border-color: #bebebe;
+  padding: 11px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-family: "mcfont", sans-serif;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.discord-btn {
+  width: 100%;
+  background: #7289da;
+  color: #ffffff;
+  border: 4px solid #444;
+  border-radius: 8px;
+  font-size: 16px;
+  border-color: #7289da;
+  padding: 11px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-family: "mcfont", sans-serif;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.msg {
+  font-size: 13px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  display: none;
+}
+.msg.error {
+  background: #2a0f0f;
+  border: 1px solid #ff5555;
+  color: #ff5555;
+  display: block;
+}
+.msg.success {
+  background: #0a2a1a;
+  border: 1px solid #05ee93;
+  color: #05ee93;
+  display: block;
+}
+.divider-text {
+  font-size: 12px;
+  color: #444;
+  margin-top: 20px;
+}
+footer {
+  color: #343434;
+  margin-top: 40px;
+  padding-bottom: 40px;
+}
+footer g {
+  color: #008e4c;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="account-card">
+    <h1>mcb<g>Code</g></h1>
+    <p class="subtitle">Sign in or create an account</p>
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+      <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Sign Up</button>
+    </div>
+
+    <div id="form-login">
+      <button class="github-btn" onclick="doGithub()"><img src="https://app.mcbcode.com/img/github_logo.png"> GitHub Login</button>
+      <button class="google-btn" onclick="doGoogle()"><img src="https://app.mcbcode.com/img/google_logo.png"> Google Login</button>
+      <button class="discord-btn" onclick="doDiscord()"><img src="https://app.mcbcode.com/img/discord_logo.png"> Discord Login</button>
+      <br><br>
+      <button class="submit-btn" id="login-btn" onclick="doLogin()">Log In</button>
+      <div class="msg" id="login-msg"></div>
+    </div>
+
+    <div id="form-register" style="display:none;">
+      <button class="github-btn" onclick="doGithub()"><img src="https://app.mcbcode.com/img/github_logo.png"> GitHub Sign Up</button> 
+      <button class="google-btn" onclick="doGoogle()"><img src="https://app.mcbcode.com/img/google_logo.png"> Google Sign Up</button>
+      <button class="discord-btn" onclick="doDiscord()"><img src="https://app.mcbcode.com/img/discord_logo.png"> Discord Sign Up</button>
+      <br><br>
+      <button class="submit-btn" id="reg-btn" onclick="doRegister()">Create Account</button>     
+      <div class="msg" id="reg-msg"></div>
+    </div>
+  <footer>Not affiliated with Microsoft or Mojang AB.<br><br>© Copyright 2026 mcb<g>Code</g></footer>
+  </div>
+
+
+  <script>
+    const AUTH = "https://auth.mcbcode.com";
+
+    // github now goes through the worker callback, not localStorage
+    function doGithub() {
+      window.location.href = `https://github.com/login/oauth/authorize?client_id=Ov23liveHrlFrvFZgW13&scope=user:email&redirect_uri=https://auth.mcbcode.com/auth/github/callback`;
+    }
+    
+    // check if already logged in via cookie
+    (async () => {
+      try {
+        const res = await fetch(`${AUTH}/me`, { credentials: "include" });
+        if (res.ok) window.location.href = "/dashboard";
+      } catch {}
+    })();
+
+    function doGoogle() {
+  window.location.href =
+    "https://accounts.google.com/o/oauth2/v2/auth" +
+    "?client_id=494331876591-r860t073hcar5in4hm15usj30jd1lfrm.apps.googleusercontent.com" +
+    "&redirect_uri=https://auth.mcbcode.com/auth/google/callback" +
+    "&response_type=code" +
+    "&scope=openid%20email%20profile" +
+    "&access_type=offline" +
+    "&prompt=consent";
+}
+
+function doDiscord() {
+  window.location.href =
+    "https://discord.com/oauth2/authorize" +
+    "?client_id=1523744647942508544" +
+    "&response_type=code" +
+    "&redirect_uri=" + encodeURIComponent("https://auth.mcbcode.com/discord/callback") +
+    "&scope=identify%20email";
+}
+
+    function switchTab(tab) {
+      const isLogin = tab === "login";
+      document.getElementById("form-login").style.display = isLogin ? "" : "none";
+      document.getElementById("form-register").style.display = isLogin ? "none" : "";
+      document.getElementById("tab-login").classList.toggle("active", isLogin);
+      document.getElementById("tab-register").classList.toggle("active", !isLogin);
+      clearMsgs();
+    }
+
+    function showMsg(id, text, type) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = `msg ${type}`;
+    }
+
+    function clearMsgs() {
+      ["login-msg", "reg-msg"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.className = "msg"; el.textContent = ""; }
+      });
+    }
+
+    async function doLogin() {
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+      const btn = document.getElementById("login-btn");
+      if (!email || !password) return showMsg("login-msg", "Please fill in all fields.", "error");
+      btn.disabled = true; btn.textContent = "Signing in...";
+      try {
+        const res = await fetch(`${AUTH}/login`, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
+        if (res.ok) { showMsg("login-msg", "Signed in! Redirecting...", "success"); setTimeout(() => window.location.href = "/dashboard", 800); }
+        else { const data = await res.json(); showMsg("login-msg", data.error || "Something went wrong.", "error"); btn.disabled = false; btn.textContent = "Sign In"; }
+      } catch { showMsg("login-msg", "Could not reach auth server.", "error"); btn.disabled = false; btn.textContent = "Sign In"; }
+    }
+
+    async function doRegister() {
+      const email = document.getElementById("reg-email").value.trim();
+      const password = document.getElementById("reg-password").value;
+      const confirm = document.getElementById("reg-confirm").value;
+      const btn = document.getElementById("reg-btn");
+      if (!email || !password || !confirm) return showMsg("reg-msg", "Please fill in all fields.", "error");
+      if (password !== confirm) return showMsg("reg-msg", "Passwords do not match.", "error");
+      if (password.length < 8) return showMsg("reg-msg", "Password must be at least 8 characters.", "error");
+      btn.disabled = true; btn.textContent = "Creating account...";
+      try {
+        const res = await fetch(`${AUTH}/register`, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
+        if (res.ok) { showMsg("reg-msg", "Account created! Redirecting...", "success"); setTimeout(() => window.location.href = "/dashboard", 800); }
+        else { const data = await res.json(); showMsg("reg-msg", data.error || "Something went wrong.", "error"); btn.disabled = false; btn.textContent = "Create Account"; }
+      } catch { showMsg("reg-msg", "Could not reach auth server.", "error"); btn.disabled = false; btn.textContent = "Create Account"; }
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key !== "Enter") return;
+      const loginVisible = document.getElementById("form-login").style.display !== "none";
+      if (loginVisible) doLogin(); else doRegister();
+    });
+  </script>
+
+  <script data-goatcounter="https://mcbcode.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
