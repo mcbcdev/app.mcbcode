@@ -1,5 +1,5 @@
 /* how to use this in other files */
-/* put <link rel="stylesheet" href="https://mcbcode.com/theme/site.css"> into the <head> of the html file */
+/* put <link rel="stylesheet" href="https://app.mcbcode.com/theme/site.css"> into the <head> of the html file */
 
 /* scrollbar */
 
@@ -33,7 +33,7 @@ html::-webkit-scrollbar-thumb:hover {
 /* mcfont */
     @font-face {
       font-family: 'mcfont';
-      src: url('https://mcbcode.com/theme/font/mcfont.ttf') format('truetype');
+      src: url('https://app.mcbcode.com/theme/font/mcfont.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
@@ -41,7 +41,7 @@ html::-webkit-scrollbar-thumb:hover {
     /* mcfontb */
     @font-face {
       font-family: 'mcfontb';
-      src: url('https://mcbcode.com/theme/font/mcfontb.ttf') format('truetype');
+      src: url('https://app.mcbcode.com/theme/font/mcfontb.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
@@ -49,7 +49,7 @@ html::-webkit-scrollbar-thumb:hover {
     /* mcfontwide */
     @font-face {
       font-family: 'mcfontwide';
-      src: url('https://mcbcode.com/theme/font/mcfontwide.ttf') format('truetype');
+      src: url('https://app.mcbcode.com/theme/font/mcfontwide.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
